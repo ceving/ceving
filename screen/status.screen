@@ -1,0 +1,1 @@
+hardstatus alwayslastline "%{= wk}%-Lw%{= wr}%50>%n%f %t%{= wk}%+Lw%<"
