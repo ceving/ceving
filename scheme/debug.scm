@@ -1,0 +1,20 @@
+(define-syntax ?
+  (syntax-rules ()
+    ((? tag arg)
+     (let ((value arg))
+       (with-output-to-port (current-error-port)
+         (lambda ()
+           (display ";;;")
+           (if tag
+               (begin
+                 (display " ")
+                 (display tag)
+                 (display ":")))
+           (display " ")
+           (write (quote arg))
+           (display " -> ")
+           (write value)
+           (newline)))
+       value))
+    ((? arg)
+     (? #f arg))))
