@@ -15,13 +15,13 @@
                (loop current-sub-string found-sub-strings)))))))
 
 #;(begin
-	(let ((space? (lambda (char) (char=? char #\space))))
-		(test* split-string
-					 (("abc def" space?) '("abc" "def"))
-					 ((" " space?) '("" ""))
-					 (("a" space?) '("a"))
-					 (("" space?) '(""))
-					 ((" a" space?) '("" "a"))
-					 (("a " space?) '("a" ""))
-					 (("  " space?) '("" "" ""))))
-	)
+  (let ((space? (lambda (char) (char=? char #\space))))
+    (test* split-string
+           (("abc def" space?) '("abc" "def"))
+           ((" " space?) '("" ""))
+           (("a" space?) '("a"))
+           (("" space?) '(""))
+           ((" a" space?) '("" "a"))
+           (("a " space?) '("a" ""))
+           (("  " space?) '("" "" ""))))
+  )
