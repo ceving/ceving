@@ -1,20 +1,21 @@
+(import (scheme write))
+
 (define-syntax ?
   (syntax-rules ()
     ((? tag arg)
-     (let ((value arg))
-       (with-output-to-port (current-error-port)
-         (lambda ()
-           (display ";;;")
-           (if tag
-               (begin
-                 (display " ")
-                 (display tag)
-                 (display ":")))
-           (display " ")
-           (write (quote arg))
-           (display " -> ")
-           (write value)
-           (newline)))
-       value))
+     (let ((p (current-error-port)))
+			 (let ((value arg))
+				 (display ";;;" p)
+				 (if tag
+						 (begin
+							 (display #\space p)
+							 (display tag p)
+							 (display #\: p)))
+				 (display #\space p)
+				 (write (quote arg) p)
+				 (display " -> " p)
+				 (write value p)
+				 (newline p)
+				 value)))
     ((? arg)
      (? #f arg))))
