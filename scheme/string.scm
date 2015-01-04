@@ -1,18 +1,15 @@
-(define (split-string input-string delimiter?)
-  (let ((input-port (open-input-string input-string)))
-    (let loop ((current-sub-string (open-output-string))
-               (found-sub-strings '()))
-      (let ((char (read-char input-port)))
-        (cond ((eof-object? char)
-               (reverse (cons (get-output-string current-sub-string)
-                              found-sub-strings)))
-              ((delimiter? char)
-               (loop (open-output-string)
-                     (cons (get-output-string current-sub-string)
-                           found-sub-strings)))
-              (else
-               (write-char char current-sub-string)
-               (loop current-sub-string found-sub-strings)))))))
+(define (split-string delimiter? string)
+  (let ((result (list))
+        (output (open-output-string)))
+    (string-for-each
+     (lambda (char)
+       (if (delimiter? char)
+           (begin
+             (set! result (cons (get-output-string output) result))
+             (set! output (open-output-string)))
+           (write-char char output)))
+     string)
+    (reverse (cons (get-output-string output) result))))
 
 #;(begin
   (let ((space? (lambda (char) (char=? char #\space))))
