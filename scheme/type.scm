@@ -12,6 +12,8 @@
        (assert predicate argument)
        ...))))
 
+;; For Emacs: (put 'lambda* 'scheme-indent-function 1)
+
 (define-syntax lambda*
   (syntax-rules ()
     ((lambda* ((predicate argument)) body ...)
@@ -27,10 +29,12 @@
        body
        ...))))
 
+;; For Emacs: (put 'define* 'scheme-indent-function 1)
+
 (define-syntax define*
   (syntax-rules ()
     ((define* (identifier (predicate argument) ...) body ...)
      (define identifier
        (lambda* ((predicate argument) ...)
-                body
-                ...)))))
+         body
+         ...)))))
