@@ -5,7 +5,7 @@
     ((? tag arg)
      (let ((p (current-error-port)))
        (let ((value arg))
-         (display ";;;" p)
+         (display ";" p)
          (if tag
              (begin
                (display #\space p)
@@ -13,7 +13,7 @@
                (display #\: p)))
          (display #\space p)
          (write (quote arg) p)
-         (display " -> " p)
+         (display " => " p)
          (write value p)
          (newline p)
          value)))
