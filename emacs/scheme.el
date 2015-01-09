@@ -4,3 +4,4 @@
 
 (put 'define* 'scheme-indent-function 1)
 (put 'lambda* 'scheme-indent-function 1)
+(put 'call-with-port 'scheme-indent-function 1)
