@@ -1,0 +1,204 @@
+AND<cond><S> Rd, Rn, Rm OP # cond 0 0 0 0 0 0 0 S Rn Rd shift  # shift 0 Rm
+AND<cond><S> Rd, Rn, Rm OP Rs cond 0 0 0 0 0 0 0 S Rn Rd Rs 0 shift 1 Rm
+MUL<cond><S> Rd, Rm, Rs cond 0 0 0 0 0 0 0 S Rd SBZ Rs 1 0 0 1 Rm
+STR<cond>H Rd, <address> cond 0 0 0 P U I W 0 Rn Rd addr_mode 1 0 1 1 addr_mode
+LDR<cond>H Rd, <address> cond 0 0 0 P U I W 1 Rn Rd addr_mode 1 0 1 1 addr_mode
+Undefined Instruction cond 0 0 0 x x x x 0 x x x x x x x x x x x x 1 1 0 1 x x x x
+LDR<cond>SB Rd, <address> cond 0 0 0 P U I W 1 Rn Rd addr_mode 1 1 0 1 addr_mode
+Undefined Instruction cond 0 0 0 x x x x 0 x x x x x x x x x x x x 1 1 1 1 x x x x
+LDR<cond>SH Rd, <address> cond 0 0 0 P U I W 1 Rn Rd addr_mode 1 1 1 1 addr_mode
+EOR<cond><S> Rd, Rn, Rm OP # cond 0 0 0 0 0 0 1 S Rn Rd shift  # shift 0 Rm
+EOR<cond><S> Rd, Rn, Rm OP Rs cond 0 0 0 0 0 0 1 S Rn Rd Rs 0 shift 1 Rm
+MLA<cond><S> Rd, Rm, Rs, Rn cond 0 0 0 0 0 0 1 S Rd Rn Rs 1 0 0 1 Rm
+SUB<cond><S> Rd, Rn, Rm OP # cond 0 0 0 0 0 1 0 S Rn Rd shift  # shift 0 Rm
+SUB<cond><S> Rd, Rn, Rm OP Rs cond 0 0 0 0 0 1 0 S Rn Rd Rs 0 shift 1 Rm
+RSB<cond><S> Rd, Rn, Rm OP # cond 0 0 0 0 0 1 1 S Rn Rd shift  # shift 0 Rm
+RSB<cond><S> Rd, Rn, Rm OP Rs cond 0 0 0 0 0 1 1 S Rn Rd Rs 0 shift 1 Rm
+ADD<cond><S> Rd, Rn, Rm OP # cond 0 0 0 0 1 0 0 S Rn Rd shift  # shift 0 Rm
+ADD<cond><S> Rd, Rn, Rm OP Rs cond 0 0 0 0 1 0 0 S Rn Rd Rs 0 shift 1 Rm
+UMULL<cond><S> RdLo, RdHi, Rm, Rs cond 0 0 0 0 1 0 0 S RdHi RdLo Rs 1 0 0 1 Rm
+ADC<cond><S> Rd, Rn, Rm OP # cond 0 0 0 0 1 0 1 S Rn Rd shift  # shift 0 Rm
+ADC<cond><S> Rd, Rn, Rm OP Rs cond 0 0 0 0 1 0 1 S Rn Rd Rs 0 shift 1 Rm
+UMLAL<cond><S> RdLo, RdHi, Rm, Rs cond 0 0 0 0 1 0 1 S RdHi RdLo Rs 1 0 0 1 Rm
+SBC<cond><S> Rd, Rn, Rm OP # cond 0 0 0 0 1 1 0 S Rn Rd shift  # shift 0 Rm
+SBC<cond><S> Rd, Rn, Rm OP Rs cond 0 0 0 0 1 1 0 S Rn Rd Rs 0 shift 1 Rm
+SMULL<cond><S> RdLo, RdHi, Rm, Rs cond 0 0 0 0 1 1 0 S RdHi RdLo Rs 1 0 0 1 Rm
+RSC<cond><S> Rd, Rn, Rm OP # cond 0 0 0 0 1 1 1 S Rn Rd shift  # shift 0 Rm
+RSC<cond><S> Rd, Rn, Rm OP Rs cond 0 0 0 0 1 1 1 S Rn Rd Rs 0 shift 1 Rm
+SMLAL<cond><S> RdLo, RdHi, Rm, Rs cond 0 0 0 0 1 1 1 S RdHi RdLo Rs 1 0 0 1 Rm
+TST<cond> Rn, Rm OP # cond 0 0 0 1 0 0 0 1 Rn SBZ shift  # shift 0 Rm
+TST<cond> Rn, Rm OP Rs cond 0 0 0 1 0 0 0 1 Rn SBZ Rs 0 shift 1 Rm
+MRS<cond> Rd, CPSR cond 0 0 0 1 0 0 0 0 SBO Rd SBZ
+SWP<cond> Rd, Rm, [Rn] cond 0 0 0 1 0 0 SBZ Rn Rd SBZ 1 0 0 1 Rm
+TEQ<cond> Rn, Rm OP # cond 0 0 0 1 0 0 1 1 Rn SBZ shift  # shift 0 Rm
+TEQ<cond> Rn, Rm OP Rs cond 0 0 0 1 0 0 1 1 Rn SBZ Rs 0 shift 1 Rm
+MSR<cond> CPSR_<fields>, Rm cond 0 0 0 1 0 0 1 0 field_mask SBO SBZ 0 Rm
+BX<cond> Rm cond 0 0 0 1 0 0 1 0 SBO SBO SBO 0 0 0 1 Rm
+CMP<cond> Rn, Rm OP # cond 0 0 0 1 0 1 0 1 Rn SBZ shift  # shift 0 Rm
+CMP<cond> Rn, Rm OP Rs cond 0 0 0 1 0 1 0 1 Rn SBZ Rs 0 shift 1 Rm
+MRS<cond> Rd, SPSR cond 0 0 0 1 0 1 0 0 SBO Rd SBZ
+SWP<cond>B Rd, Rm, [Rn] cond 0 0 0 1 0 1 SBZ Rn Rd SBZ 1 0 0 1 Rm
+CMN<cond> Rn, Rm OP # cond 0 0 0 1 0 1 1 1 Rn SBZ shift  # shift 0 Rm
+CMN<cond> Rn, Rm OP Rs cond 0 0 0 1 0 1 1 1 Rn SBZ Rs 0 shift 1 Rm
+MSR<cond> SPSR_<fields>, Rm cond 0 0 0 1 0 1 1 0 field_mask SBO SBZ 0 Rm
+ORR<cond><S> Rd, Rn, Rm OP # cond 0 0 0 1 1 0 0 S Rn Rd shift  # shift 0 Rm
+ORR<cond><S> Rd, Rn, Rm OP Rs cond 0 0 0 1 1 0 0 S Rn Rd Rs 0 shift 1 Rm
+MOV<cond><S> Rd, Rm OP # cond 0 0 0 1 1 0 1 S SBZ Rd shift  # shift 0 Rm
+MOV<cond><S> Rd, Rm OP Rs cond 0 0 0 1 1 0 1 S SBZ Rd Rs 0 shift 1 Rm
+BIC<cond><S> Rd, Rn, Rm OP # cond 0 0 0 1 1 1 0 S Rn Rd shift  # shift 0 Rm
+BIC<cond><S> Rd, Rn, Rm OP Rs cond 0 0 0 1 1 1 0 S Rn Rd Rs 0 shift 1 Rm
+MVN<cond><S> Rd, Rm OP # cond 0 0 0 1 1 1 1 S SBZ Rd shift  # shift 0 Rm
+MVN<cond><S> Rd, Rm OP Rs cond 0 0 0 1 1 1 1 S SBZ Rd Rs 0 shift 1 Rm
+AND<cond><S> Rd, Rn, # cond 0 0 1 0 0 0 0 S Rn Rd rotate #
+EOR<cond><S> Rd, Rn, # cond 0 0 1 0 0 0 1 S Rn Rd rotate #
+SUB<cond><S> Rd, Rn, # cond 0 0 1 0 0 1 0 S Rn Rd rotate #
+RSB<cond><S> Rd, Rn, # cond 0 0 1 0 0 1 1 S Rn Rd rotate #
+ADD<cond><S> Rd, Rn, # cond 0 0 1 0 1 0 0 S Rn Rd rotate #
+ADC<cond><S> Rd, Rn, # cond 0 0 1 0 1 0 1 S Rn Rd rotate #
+SBC<cond><S> Rd, Rn, # cond 0 0 1 0 1 1 0 S Rn Rd rotate #
+RSC<cond><S> Rd, Rn, # cond 0 0 1 0 1 1 1 S Rn Rd rotate #
+TST<cond> Rn, # cond 0 0 1 1 0 0 0 1 Rn SBZ rotate #
+TEQ<cond> Rn, # cond 0 0 1 1 0 0 1 1 Rn SBZ rotate #
+MSR<cond> CPSR_f, # cond 0 0 1 1 0 0 1 0 field_mask SBO rotate #
+CMP<cond> Rn, # cond 0 0 1 1 0 1 0 1 Rn SBZ rotate #
+CMN<cond> Rn, # cond 0 0 1 1 0 1 1 1 Rn SBZ rotate #
+MSR<cond> SPSR_f, # cond 0 0 1 1 0 1 1 0 field_mask SBO rotate #
+ORR<cond><S> Rd, Rn, # cond 0 0 1 1 1 0 0 S Rn Rd rotate #
+MOV<cond><S> Rd, # cond 0 0 1 1 1 0 1 S SBZ Rd rotate #
+BIC<cond><S> Rd, Rn, # cond 0 0 1 1 1 1 0 S Rn Rd rotate #
+MVN<cond><S> Rd, # cond 0 0 1 1 1 1 1 S SBZ Rd rotate #
+STR<cond> Rd, Rn, # cond 0 1 0 P U 0 W 0 Rn Rd #
+LDR<cond> Rd, Rn, # cond 0 1 0 P U 0 W 1 Rn Rd #
+STR<cond>B Rd, Rn, # cond 0 1 0 P U 1 W 0 Rn Rd #
+LDR<cond>B Rd, Rn, # cond 0 1 0 P U 1 W 1 Rn Rd #
+STR<cond>T Rd, Rn, # cond 0 1 0 0 U 0 1 0 Rn Rd #
+LDR<cond>T Rd, Rn, # cond 0 1 0 0 U 0 1 1 Rn Rd #
+STR<cond>BT Rd, Rn, # cond 0 1 0 0 U 1 1 0 Rn Rd #
+LDR<cond>BT Rd, Rn, # cond 0 1 0 0 U 1 1 1 Rn Rd #
+STR<cond> Rd, Rn, # cond 0 1 1 P U 0 W 0 Rn Rd shift # shift 0 Rm
+LDR<cond> Rd, Rn, # cond 0 1 1 P U 0 W 1 Rn Rd shift # shift 0 Rm
+STR<cond>B Rd, Rn, # cond 0 1 1 P U 1 W 0 Rn Rd shift # shift 0 Rm
+LDR<cond>B Rd, Rn, # cond 0 1 1 P U 1 W 1 Rn Rd shift # shift 0 Rm
+STR<cond>T Rd, Rn, # cond 0 1 1 0 U 0 1 0 Rn Rd shift  # shift 0 Rm
+LDR<cond>T Rd, Rn, # cond 0 1 1 0 U 0 1 1 Rn Rd shift  # shift 0 Rm
+STR<cond>BT Rd, Rn, # cond 0 1 1 0 U 1 1 0 Rn Rd shift  # shift 0 Rm
+LDR<cond>BT Rd, Rn, # cond 0 1 1 0 U 1 1 1 Rn Rd shift  # shift 0 Rm
+Undefined Instruction cond 0 1 1 x x x x x x x x x x x x x x x x x x x x 1 x x x x
+STM<cond><addrmode> Rm<!>, reg list cond 1 0 0 P U 0 W 0 Rn register list
+LDM<cond><addrmode> Rm<!>, reg list cond 1 0 0 P U 0 W 1 Rn register list
+STM<cond><addrmode> Rm, reg list^ cond 1 0 0 P U 1 0 0 Rn 0 register list
+UNPREDICTABLE cond 1 0 0 x x 1 1 0 x x x x x x x x x x x x x x x x x x x x
+LDM<cond><addrmode> Rm, reg list^ cond 1 0 0 P U 1 0 1 Rn 0 register list
+UNPREDICTABLE cond 1 0 0 x x 1 1 1 x x x x x x x x x x x x x x x x x x x x
+STM<cond><addrmode> Rm<!>, reg list^ cond 1 0 0 P U 1 W 0 Rn 1 register list
+LDM<cond><addrmode> Rm<!>, reg list^ cond 1 0 0 P U 1 W 1 Rn 1 register list
+B<cond> <target addr> cond 1 0 1 0 24_bit_offset
+BL<cond> <target addr> cond 1 0 1 1 24_bit_offset
+STC<cond> p<cp_num>, CRd, # cond 1 1 0 P U N W 0 Rn CRd cp_num #
+LDC<cond> p<cp_num>, CRd, # cond 1 1 0 P U N W 1 Rn CRd cp_num #
+CDP<cond> p<cp#>,<o1>,CRd,CRn,CRm,<o2> cond 1 1 1 0 op1 CRn CRd cp_num op2 0 CRm
+MCR<cond> p<cp#>,<o1>,Rd,CRn,CRm,<o2> cond 1 1 1 0 op1 0 CRn Rd cp_num op2 1 CRm
+MRC<cond> p<cp#>,<o1>,Rd,CRn,CRm,<o2> cond 1 1 1 0 op1 1 CRn Rd cp_num op2 1 CRm
+SWI <swi_number> cond 1 1 1 1 swi_number
+ADC<cond><S> Rd, Rn, # cond 0 0 1 0 1 0 1 S Rn Rd rotate #
+ADC<cond><S> Rd, Rn, Rm OP # cond 0 0 0 0 1 0 1 S Rn Rd shift  # shift 0 Rm
+ADC<cond><S> Rd, Rn, Rm OP Rs cond 0 0 0 0 1 0 1 S Rn Rd Rs 0 shift 1 Rm
+ADD<cond><S> Rd, Rn, # cond 0 0 1 0 1 0 0 S Rn Rd rotate #
+ADD<cond><S> Rd, Rn, Rm OP # cond 0 0 0 0 1 0 0 S Rn Rd shift  # shift 0 Rm
+ADD<cond><S> Rd, Rn, Rm OP Rs cond 0 0 0 0 1 0 0 S Rn Rd Rs 0 shift 1 Rm
+AND<cond><S> Rd, Rn, # cond 0 0 1 0 0 0 0 S Rn Rd rotate #
+AND<cond><S> Rd, Rn, Rm OP # cond 0 0 0 0 0 0 0 S Rn Rd shift  # shift 0 Rm
+AND<cond><S> Rd, Rn, Rm OP Rs cond 0 0 0 0 0 0 0 S Rn Rd Rs 0 shift 1 Rm
+B<cond> <target addr> cond 1 0 1 0 24_bit_offset
+BIC<cond><S> Rd, Rn, # cond 0 0 1 1 1 1 0 S Rn Rd rotate #
+BIC<cond><S> Rd, Rn, Rm OP # cond 0 0 0 1 1 1 0 S Rn Rd shift  # shift 0 Rm
+BIC<cond><S> Rd, Rn, Rm OP Rs cond 0 0 0 1 1 1 0 S Rn Rd Rs 0 shift 1 Rm
+BL<cond> <target addr> cond 1 0 1 1 24_bit_offset
+BX<cond> Rm cond 0 0 0 1 0 0 1 0 SBO SBO SBO 0 0 0 1 Rm
+CDP<cond> p<cp#>,<o1>,CRd,CRn,CRm,<o2> cond 1 1 1 0 op1 CRn CRd cp_num op2 0 CRm
+CMN<cond> Rn, # cond 0 0 1 1 0 1 1 1 Rn SBZ rotate #
+CMN<cond> Rn, Rm OP # cond 0 0 0 1 0 1 1 1 Rn SBZ shift  # shift 0 Rm
+CMN<cond> Rn, Rm OP Rs cond 0 0 0 1 0 1 1 1 Rn SBZ Rs 0 shift 1 Rm
+CMP<cond> Rn, # cond 0 0 1 1 0 1 0 1 Rn SBZ rotate #
+CMP<cond> Rn, Rm OP # cond 0 0 0 1 0 1 0 1 Rn SBZ shift  # shift 0 Rm
+CMP<cond> Rn, Rm OP Rs cond 0 0 0 1 0 1 0 1 Rn SBZ Rs 0 shift 1 Rm
+EOR<cond><S> Rd, Rn, # cond 0 0 1 0 0 0 1 S Rn Rd rotate #
+EOR<cond><S> Rd, Rn, Rm OP # cond 0 0 0 0 0 0 1 S Rn Rd shift  # shift 0 Rm
+EOR<cond><S> Rd, Rn, Rm OP Rs cond 0 0 0 0 0 0 1 S Rn Rd Rs 0 shift 1 Rm
+LDC<cond> p<cp_num>, CRd, # cond 1 1 0 P U N W 1 Rn CRd cp_num #
+LDM<cond><addrmode> Rm, reg list^ cond 1 0 0 P U 1 0 1 Rn 0 register list
+LDM<cond><addrmode> Rm<!>, reg list cond 1 0 0 P U 0 W 1 Rn register list
+LDM<cond><addrmode> Rm<!>, reg list^ cond 1 0 0 P U 1 W 1 Rn 1 register list
+LDR<cond> Rd, Rn, # cond 0 1 0 P U 0 W 1 Rn Rd #
+LDR<cond> Rd, Rn, # cond 0 1 1 P U 0 W 1 Rn Rd shift # shift 0 Rm
+LDR<cond>B Rd, Rn, # cond 0 1 0 P U 1 W 1 Rn Rd #
+LDR<cond>B Rd, Rn, # cond 0 1 1 P U 1 W 1 Rn Rd shift # shift 0 Rm
+LDR<cond>BT Rd, Rn, # cond 0 1 0 0 U 1 1 1 Rn Rd #
+LDR<cond>BT Rd, Rn, # cond 0 1 1 0 U 1 1 1 Rn Rd shift  # shift 0 Rm
+LDR<cond>H Rd, <address> cond 0 0 0 P U I W 1 Rn Rd addr_mode 1 0 1 1 addr_mode
+LDR<cond>SB Rd, <address> cond 0 0 0 P U I W 1 Rn Rd addr_mode 1 1 0 1 addr_mode
+LDR<cond>SH Rd, <address> cond 0 0 0 P U I W 1 Rn Rd addr_mode 1 1 1 1 addr_mode
+LDR<cond>T Rd, Rn, # cond 0 1 0 0 U 0 1 1 Rn Rd #
+LDR<cond>T Rd, Rn, # cond 0 1 1 0 U 0 1 1 Rn Rd shift  # shift 0 Rm
+MCR<cond> p<cp#>,<o1>,Rd,CRn,CRm,<o2> cond 1 1 1 0 op1 0 CRn Rd cp_num op2 1 CRm
+MLA<cond><S> Rd, Rm, Rs, Rn cond 0 0 0 0 0 0 1 S Rd Rn Rs 1 0 0 1 Rm
+MOV<cond><S> Rd, # cond 0 0 1 1 1 0 1 S SBZ Rd rotate #
+MOV<cond><S> Rd, Rm OP # cond 0 0 0 1 1 0 1 S SBZ Rd shift  # shift 0 Rm
+MOV<cond><S> Rd, Rm OP Rs cond 0 0 0 1 1 0 1 S SBZ Rd Rs 0 shift 1 Rm
+MRC<cond> p<cp#>,<o1>,Rd,CRn,CRm,<o2> cond 1 1 1 0 op1 1 CRn Rd cp_num op2 1 CRm
+MRS<cond> Rd, CPSR cond 0 0 0 1 0 0 0 0 SBO Rd SBZ
+MRS<cond> Rd, SPSR cond 0 0 0 1 0 1 0 0 SBO Rd SBZ
+MSR<cond> CPSR_<fields>, Rm cond 0 0 0 1 0 0 1 0 field_mask SBO SBZ 0 Rm
+MSR<cond> CPSR_f, # cond 0 0 1 1 0 0 1 0 field_mask SBO rotate #
+MSR<cond> SPSR_<fields>, Rm cond 0 0 0 1 0 1 1 0 field_mask SBO SBZ 0 Rm
+MSR<cond> SPSR_f, # cond 0 0 1 1 0 1 1 0 field_mask SBO rotate #
+MUL<cond><S> Rd, Rm, Rs cond 0 0 0 0 0 0 0 S Rd SBZ Rs 1 0 0 1 Rm
+MVN<cond><S> Rd, # cond 0 0 1 1 1 1 1 S SBZ Rd rotate #
+MVN<cond><S> Rd, Rm OP # cond 0 0 0 1 1 1 1 S SBZ Rd shift  # shift 0 Rm
+MVN<cond><S> Rd, Rm OP Rs cond 0 0 0 1 1 1 1 S SBZ Rd Rs 0 shift 1 Rm
+ORR<cond><S> Rd, Rn, # cond 0 0 1 1 1 0 0 S Rn Rd rotate #
+ORR<cond><S> Rd, Rn, Rm OP # cond 0 0 0 1 1 0 0 S Rn Rd shift  # shift 0 Rm
+ORR<cond><S> Rd, Rn, Rm OP Rs cond 0 0 0 1 1 0 0 S Rn Rd Rs 0 shift 1 Rm
+RSB<cond><S> Rd, Rn, # cond 0 0 1 0 0 1 1 S Rn Rd rotate #
+RSB<cond><S> Rd, Rn, Rm OP # cond 0 0 0 0 0 1 1 S Rn Rd shift  # shift 0 Rm
+RSB<cond><S> Rd, Rn, Rm OP Rs cond 0 0 0 0 0 1 1 S Rn Rd Rs 0 shift 1 Rm
+RSC<cond><S> Rd, Rn, # cond 0 0 1 0 1 1 1 S Rn Rd rotate #
+RSC<cond><S> Rd, Rn, Rm OP # cond 0 0 0 0 1 1 1 S Rn Rd shift  # shift 0 Rm
+RSC<cond><S> Rd, Rn, Rm OP Rs cond 0 0 0 0 1 1 1 S Rn Rd Rs 0 shift 1 Rm
+SBC<cond><S> Rd, Rn, # cond 0 0 1 0 1 1 0 S Rn Rd rotate #
+SBC<cond><S> Rd, Rn, Rm OP # cond 0 0 0 0 1 1 0 S Rn Rd shift  # shift 0 Rm
+SBC<cond><S> Rd, Rn, Rm OP Rs cond 0 0 0 0 1 1 0 S Rn Rd Rs 0 shift 1 Rm
+SMLAL<cond><S> RdLo, RdHi, Rm, Rs cond 0 0 0 0 1 1 1 S RdHi RdLo Rs 1 0 0 1 Rm
+SMULL<cond><S> RdLo, RdHi, Rm, Rs cond 0 0 0 0 1 1 0 S RdHi RdLo Rs 1 0 0 1 Rm
+STC<cond> p<cp_num>, CRd, # cond 1 1 0 P U N W 0 Rn CRd cp_num #
+STM<cond><addrmode> Rm, reg list^ cond 1 0 0 P U 1 0 0 Rn 0 register list
+STM<cond><addrmode> Rm<!>, reg list cond 1 0 0 P U 0 W 0 Rn register list
+STM<cond><addrmode> Rm<!>, reg list^ cond 1 0 0 P U 1 W 0 Rn 1 register list
+STR<cond> Rd, Rn, # cond 0 1 0 P U 0 W 0 Rn Rd #
+STR<cond> Rd, Rn, # cond 0 1 1 P U 0 W 0 Rn Rd shift # shift 0 Rm
+STR<cond>B Rd, Rn, # cond 0 1 0 P U 1 W 0 Rn Rd #
+STR<cond>B Rd, Rn, # cond 0 1 1 P U 1 W 0 Rn Rd shift # shift 0 Rm
+STR<cond>BT Rd, Rn, # cond 0 1 0 0 U 1 1 0 Rn Rd #
+STR<cond>BT Rd, Rn, # cond 0 1 1 0 U 1 1 0 Rn Rd shift  # shift 0 Rm
+STR<cond>H Rd, <address> cond 0 0 0 P U I W 0 Rn Rd addr_mode 1 0 1 1 addr_mode
+STR<cond>T Rd, Rn, # cond 0 1 0 0 U 0 1 0 Rn Rd #
+STR<cond>T Rd, Rn, # cond 0 1 1 0 U 0 1 0 Rn Rd shift  # shift 0 Rm
+SUB<cond><S> Rd, Rn, # cond 0 0 1 0 0 1 0 S Rn Rd rotate #
+SUB<cond><S> Rd, Rn, Rm OP # cond 0 0 0 0 0 1 0 S Rn Rd shift  # shift 0 Rm
+SUB<cond><S> Rd, Rn, Rm OP Rs cond 0 0 0 0 0 1 0 S Rn Rd Rs 0 shift 1 Rm
+SWI <swi_number> cond 1 1 1 1 swi_number
+SWP<cond> Rd, Rm, [Rn] cond 0 0 0 1 0 0 SBZ Rn Rd SBZ 1 0 0 1 Rm
+SWP<cond>B Rd, Rm, [Rn] cond 0 0 0 1 0 1 SBZ Rn Rd SBZ 1 0 0 1 Rm
+TEQ<cond> Rn, # cond 0 0 1 1 0 0 1 1 Rn SBZ rotate #
+TEQ<cond> Rn, Rm OP # cond 0 0 0 1 0 0 1 1 Rn SBZ shift  # shift 0 Rm
+TEQ<cond> Rn, Rm OP Rs cond 0 0 0 1 0 0 1 1 Rn SBZ Rs 0 shift 1 Rm
+TST<cond> Rn, # cond 0 0 1 1 0 0 0 1 Rn SBZ rotate #
+TST<cond> Rn, Rm OP # cond 0 0 0 1 0 0 0 1 Rn SBZ shift  # shift 0 Rm
+TST<cond> Rn, Rm OP Rs cond 0 0 0 1 0 0 0 1 Rn SBZ Rs 0 shift 1 Rm
+UMLAL<cond><S> RdLo, RdHi, Rm, Rs cond 0 0 0 0 1 0 1 S RdHi RdLo Rs 1 0 0 1 Rm
+UMULL<cond><S> RdLo, RdHi, Rm, Rs cond 0 0 0 0 1 0 0 S RdHi RdLo Rs 1 0 0 1 Rm
+Undefined Instruction cond 0 0 0 x x x x 0 x x x x x x x x x x x x 1 1 0 1 x x x x
+Undefined Instruction cond 0 0 0 x x x x 0 x x x x x x x x x x x x 1 1 1 1 x x x x
+Undefined Instruction cond 0 1 1 x x x x x x x x x x x x x x x x x x x x 1 x x x x
+UNPREDICTABLE cond 1 0 0 x x 1 1 0 x x x x x x x x x x x x x x x x x x x x
+UNPREDICTABLE cond 1 0 0 x x 1 1 1 x x x x x x x x x x x x x x x x x x x x
