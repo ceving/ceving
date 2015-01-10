@@ -1,0 +1,27 @@
+
+
+xxxx xxx0
+xxxx xx01
+xxxx x011
+
+----------------------------------------
+
+0 bedeutet Ende-Byte
+1 bedeutet es folgen weitere Bytes
+
+08 0xxx xxxx
+32 1xxx xxxx 1xxx xxxx 1xxx xxxx 0xxx xxxx
+
+----------------------------------------
+
+0   bedeutet Ende-Byte
+10  bedeutet auf dieses Byte folgende weitere Daten
+110 bedeutet auf dieses Doppel-Byte folgen weitere Daten
+
+08 1  0xxx xxxx
+32 7  10xx xxxx 10xx xxxx 10xx xxxx 0xxx xxxx
+32 6  110x xxxx xxxx xxxx 10xx xxxx 0xxx xxxx
+
+
+
+110x xxxx
