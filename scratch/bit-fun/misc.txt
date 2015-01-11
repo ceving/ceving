@@ -6,22 +6,54 @@ xxxx x011
 
 ----------------------------------------
 
+Variante 1: jedes Byte trägt einen Marker mit genau einem Bit.
+
 0 bedeutet Ende-Byte
 1 bedeutet es folgen weitere Bytes
 
-08 0xxx xxxx
-32 1xxx xxxx 1xxx xxxx 1xxx xxxx 0xxx xxxx
+08   7/1  0xxx xxxx
+16  14/2  1xxx xxxx  0xxx xxxx
+32  28/4  1xxx xxxx  1xxx xxxx  1xxx xxxx  0xxx xxxx
+64  53/8  1xxx xxxx  1xxx xxxx  1xxx xxxx  1xxx xxxx 1xxx xxxx  1xxx xxxx  1xxx xxxx  0xxx xxxx
+
 
 ----------------------------------------
 
-0   bedeutet Ende-Byte
-10  bedeutet auf dieses Byte folgende weitere Daten
-110 bedeutet auf dieses Doppel-Byte folgen weitere Daten
+Variante 2: unterschiedliche lange Marker für unterschiedlich lange Worte.
+
+0     bedeutet Ende-Byte
+10    bedeutet auf dieses Byte folgende weitere Daten
+110   bedeutet auf diese 2 Bytes folgen weitere Daten
+1110  bedeutet auf diese 4 Bytes folgen weitere Daten
+11110 bedeutet auf diese 8 Bytes folgen weitere Daten
 
 08 1  0xxx xxxx
 32 7  10xx xxxx 10xx xxxx 10xx xxxx 0xxx xxxx
 32 6  110x xxxx xxxx xxxx 10xx xxxx 0xxx xxxx
 
 
+----------------------------------------
 
-110x xxxx
+Variante 3: nur die Länge ist variabel kodiert
+
+xxx0        3 Bit-Länge
+xxx1 xxx0   6 Bit-Länge
+
+----------------------------------------
+
+0xxx xxxx
+
+(bits 95)
+(bits 63)
+(bits 127)
+
+(define (int-range n)
+  (let ((min (cons 1 (make-list (- n 1) 0)))
+        (max (cons 0 (make-list (- n 1) 1))))
+    (cons (int min) (int max))))
+
+(int-range 6)
+
+x x x x x x x 0  ascii
+x x x x x x 0 1  int6
+x x x x x 0 1 1  

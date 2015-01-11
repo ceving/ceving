@@ -15,15 +15,18 @@
                   (cons (lsb int) bits))))
       (not-bits (bits (- (- int) 1)))))
 
+(define (uint bits)
+  (let loop ((num 0)
+             (bits bits))
+    (if (null? bits)
+        num
+        (loop (+ (* num 2) (car bits))
+              (cdr bits)))))
+
 (define (int bits)
   (case (car bits)
-    ((0) (let loop ((num 0)
-                    (bits (cdr bits)))
-           (if (null? bits)
-               num
-               (loop (+ (* num 2) (car bits))
-                     (cdr bits)))))
-    ((1) (- (- (int (not-bits bits))) 1))
+    ((0) (uint (cdr bits)))
+    ((1) (- (- (uint (not-bits bits))) 1))
     (else (error "Not a bit"))))
 
 ;;
