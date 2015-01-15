@@ -1,0 +1,87 @@
+#! /bin/bash
+set -eu
+
+encode ()
+{
+  local arg=$1
+  local len=${#arg}
+  local enc=
+
+  for (( pos=0 ; pos<len ; pos++ )); do
+     c=${arg:$pos:1}
+     case "$c" in
+        [-_.~a-zA-Z0-9]) o=$c;;
+        *) printf -v o '%%%02x' "'$c"
+     esac
+     enc+=$o
+  done
+  echo "$enc"
+}
+
+decode ()
+{
+    printf "${1//\%/\\x}"
+}
+
+featurefilm ()
+{
+  curl -LsS http://feature-film.org/"$*"
+}
+
+xpath ()
+{
+  xmllint --html --xpath "$1" - 2>/dev/null
+}
+
+attrval ()
+{
+  local attribute=$1; shift
+  sed -n 's/ '"$attribute"'="\([^"]\+\)"/\1\n/gp'
+}
+
+hrefs ()
+{
+  xpath '//a/@href' | attrval href
+}
+
+ffmaxpage ()
+{
+  featurefilm | hrefs |
+  sed -n 's%.*/page/\([0-9]\+\)/%\1%p' |
+  sort -rn | head -1
+}
+
+ffpagerefs ()
+{
+  local page=$1; shift
+  featurefilm page/"$page"/ |
+  xpath '//h3/a/@href' |
+  attrval href
+}
+
+ffallrefs ()
+{
+  local -i maxp=$(ffmaxpage)
+  for ((n=1; n<=maxp; n++)); do
+    echo "$n of $maxp" >&2
+    ffpagerefs $n
+  done
+}
+
+ARGS=()
+while getopts 'mp:a' OPTION; do
+  case $OPTION in
+    m) ACTION=ffmaxpage;;
+    p) ACTION=ffpagerefs; ((N=$OPTARG)); ARGS=($N);;
+    a) ACTION=ffallrefs;;
+  esac
+done
+shift $((OPTIND-1))
+
+if [ "${ACTION:-}" ]; then
+  if ((${#ARGS[@]} > 0)); then
+    $ACTION "${ARGS[@]}"
+  else
+    $ACTION
+  fi
+fi
