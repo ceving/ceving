@@ -244,33 +244,67 @@
     (lambda (pattern)
       (let* ((pattern (string->vector pattern))
              (next (prepare-knuth-pratt-morris pattern)))
-        (lambda (port)
-          (let ((output-port (open-output-string)))
-            (let loop ((pattern-index 0)
-                       (char (peek-char port)))
-              (cond ((eof-object? char)
-                     (let ((output-string (get-output-string output-port)))
-                       (if (string=? "" output-string)
-                           char
-                           output-string)))
-                    ((>= pattern-index (vector-length pattern))
-                     (get-output-string output-port))
-                    ((char=? char (vector-ref pattern pattern-index))
-                     (write-char (read-char port) output-port)
-                     (loop (+ pattern-index 1) (peek-char port)))
-                    ((= pattern-index 0)
-                     (write-char (read-char port) output-port)
-                     (loop pattern-index (peek-char port)))
-                    (else
-                     (loop (vector-ref next pattern-index) char))))))))))
+        (? pattern)
+        (? next)
+        (lambda (input-port)
+          (let ((peek-char (lambda ()
+                             (peek-char input-port))))
+            (let ((char (peek-char)))
+              (if (eof-object? char)
+                  char
+                  (call-with-port (open-output-string)
+                    (lambda (output-port)
+                      (let ((read-char (lambda ()
+                                         (read-char input-port)))
+                            (write-char (lambda (char)
+                                          (write-char char output-port))))
+                        (let loop ((pattern-index 0)
+                                   (char char))
+                          (cond ((eof-object? char)
+                                 (get-output-string output-port))
+                                ((>= pattern-index (vector-length pattern))
+                                 (get-output-string output-port))
+                                ((char=? char (vector-ref pattern pattern-index))
+                                 (loop (+ pattern-index 1) (read-char)))
+                                ((= pattern-index 0)
+                                 (write-char (read-char))
+                                 (loop pattern-index (peek-char)))
+                                (else
+                                 (let* ((new-index (vector-ref next pattern-index))
+                                        (back (- pattern-index new-index)))
+                                   (let loop ((n 0))
+                                     (if (> n 0)
+                                         (begin
+                                           (write-char (vector-ref pattern n))
+                                           (loop (+ n 1)))))
+                                   (? pattern-index)
+                                   (? (vector-ref next pattern-index))
+                                   (loop new-index char))))))))))))))))
 
 
-(knuth-pratt-morris "abc" "xxxxxxx")
-(knuth-pratt-morris "abc" "xxxxabc")
-(knuth-pratt-morris "abc" (open-input-string "xxxxxxx"))
+(begin
+  (newline)
+  ((make-delimited-reader "ababb") (open-input-string "aab")))
 
-((make-delimited-reader "abc") (open-input-string "xxxxxxx"))
-((make-delimited-reader "abc") (open-input-string "xxxxabc"))
+((make-delimited-reader "abc") (open-input-string "1abc"))
+
+((make-delimited-reader "abc") (open-input-string "123"))
+
+((make-delimited-reader "abc") (open-input-string "1234abc"))
+
+((make-delimited-reader "aabb") (open-input-string "aabaabb"))
+
+((make-delimited-reader "aabaaa") (open-input-string "aaa"))
+
+((make-delimited-reader "aabaaa") (open-input-string "aaabaabaaab"))
+
+((make-delimited-reader "abcdabd") (open-input-string "abc abcdab abcdabcdabde"))
+
+(equal? char=? char=?)
+
+(equal? (lambda (c) (char=? #\a))
+        (lambda (c) (char=? #\a)))
+        
 
 (let ((reader (make-delimited-reader "abc"))
       (input (open-input-string "xxxxabc abcab")))
@@ -356,3 +390,160 @@
                        (set-cdr! tail (cons n (cdr tail)))
                        (loop (+ n 1) (cdr tail)))
                      (cdr liste))))))))
+
+
+def failTable(pattern):
+    # Create the resulting table, which for length zero is None.
+    result = [None]
+
+    # Iterate across the rest of the characters, filling in the values for the
+    # rest of the table.
+    for i in range(0, len(pattern)):
+        # Keep track of the size of the subproblem we're dealing with, which
+        # starts off using the first i characters of the string.
+        j = i
+
+        while True:
+            # If j hits zero, the recursion says that the resulting value is
+            # zero since we're looking for the LPB of a single-character
+            # string.
+            if j == 0:
+                result.append(0)
+                break
+
+            # Otherwise, if the character one step after the LPB matches the
+            # next character in the sequence, then we can extend the LPB by one
+            # character to get an LPB for the whole sequence.
+            if pattern[result[j]] == pattern[i]:
+                result.append(result[j] + 1)
+                break
+
+            # Finally, if neither of these hold, then we need to reduce the
+            # subproblem to the LPB of the LPB.
+            j = result[j]
+    
+    return result
+
+(define (prepare-kmp p)
+  (let* ((m (string-length p))
+         (next (make-vector m 0)))
+    (let loop ((i 1) (j 0))
+       (cond ((>= i (- m 1))
+              next)
+             ((char=? (string-ref p i) (string-ref p j))
+              (let ((i (+ i 1))
+                    (j (+ j 1)))
+                 (vector-set! next i j)
+                 (loop i j)))
+             ((= j 0)
+              (let ((i (+ i 1)))
+                 (vector-set! next i 0)
+                 (loop i j)))
+             (else
+              (loop i (vector-ref next j)))))))
+(prepare-kmp "ababcac")
+
+#     a b a b c a c
+#    * 0 0 1 2 0 1 0
+
+(define (kmp-fail equal? pattern)
+  (let ((next (make-vector (+ 1 (vector-length pattern)))))
+    (vector-set! next 0 #f)
+    (let loop ((i 0)
+               (j 0))
+      (cond ((= j 0)
+             (vector-set! next i 0)
+             (let ((i+1 (+ i 1)))
+               (loop i+1 i+1)))
+             
+
+
+;; p: pattern to search
+;; m: length of the pattern
+
+(define (kmp-next =? m p)
+  (let-values (((next-ref next-set!)
+                (let ((next (make-vector m 0)))
+                  (values (lambda (x) (vector-ref next x))
+                          (lambda (x v) (vector-set! next x v))))))
+    (let loop ((i 1) (j 0))
+      (cond ((>= i (- m 1))
+             next-ref)
+            ((=? (p i) (p j))
+             (let ((i (+ i 1))
+                   (j (+ j 1)))
+               (next-set! i j)
+               (loop i j)))
+            ((= j 0)
+             (let ((i (+ i 1)))
+               (next-set! i 0)
+               (loop i j)))
+            (else
+             (loop i (next-ref j)))))))
+
+(define (kmp-search =? p s)
+  (let* ((m (vector-length p))
+         (p (lambda (x) (vector-ref p x)))
+         (next (kmp-next =? m p))
+         (n (string-length s)))
+    (let loop ((i 0) (j 0))
+      (cond ((>= j m)
+             (- i m))
+            ((>= i n)
+             #f)
+            ((=? (string-ref s i) (p j))
+             (loop (+ i 1) (+ j 1)))
+            ((= j 0)
+             (loop (+ i 1) j))
+            (else
+             (loop i (next j)))))))
+
+
+(kmp-search char=? (string->vector "abc") "cab")
+
+(kmp-search char=? (string->vector "abc") "aabc")
+
+(kmp-search char=? (string->vector "abcdabd") "abc abcdab abcdabcdabde")
+
+
+(define (char/eof=? a b)
+  (or (and (eof-object? a)
+           (eof-object? b))
+      (not (eof-object? b))
+      (char=? a b)))
+
+(define eof (eof-object))
+
+(map (lambda (e?)
+       (e? (eof-object)
+           (call-with-port (open-input-file "/dev/null") read-char)))
+     (list eq? eqv? equal?))
+
+
+(import (chibi type-inference))
+(equal? (type-analyze '(read-char))
+        (type-analyze '(eof-object))) => #t
+(char? (eof-object))                  => #f
+(char=? (eof-object) (eof-object))    => error
+
+
+(define (fail-table pattern)
+  (define result (list #f))
+  (let loop ((i 0))
+    (if (< i (vector-length pattern))
+        (begin
+          (let loop ((j i))
+            (cond ((= j 0)
+                   (set! result (append result (list 0))))
+                  ((char=? (vector-ref pattern (? (list-ref (? result) (? j))))
+                           (vector-ref (? pattern) (? i)))
+                   (set! result (append result (list (+ (list-ref result j) 1)))))
+                  (else (loop (list-ref result j)))))
+          (loop (+ i 1)))
+        result)))
+
+(fail-table (string->vector "ab"))
+#     a b a b c a c
+#    * 0 0 1 2 0 1 0
+
+(fail-table (string->vector "ababcac"))
