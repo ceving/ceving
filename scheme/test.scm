@@ -1,4 +1,6 @@
-(import (scheme write))
+;;
+;; Testing
+;;
 
 (define-syntax test
   (syntax-rules ()

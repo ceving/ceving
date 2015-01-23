@@ -1,0 +1,5 @@
+(define-library (szi debug)
+  (export ?)
+  (import (scheme base)
+          (scheme write))
+  (include "debug.scm"))

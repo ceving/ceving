@@ -1,0 +1,5 @@
+(define-library (szi test)
+  (export test test*)
+  (import (scheme base)
+          (scheme write))
+  (include "test.scm"))

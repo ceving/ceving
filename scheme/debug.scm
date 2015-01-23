@@ -1,4 +1,6 @@
-(import (scheme write))
+;;
+;; A debug macro to inspect expressions.
+;;
 
 (define-syntax ?
   (syntax-rules ()

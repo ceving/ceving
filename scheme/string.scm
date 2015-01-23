@@ -1,3 +1,7 @@
+;;
+;; String handling
+;;
+
 (define (split-string delimiter? string)
   (let ((result (list))
         (output (open-output-string)))
