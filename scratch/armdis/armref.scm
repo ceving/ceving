@@ -547,3 +547,150 @@ def failTable(pattern):
 #    * 0 0 1 2 0 1 0
 
 (fail-table (string->vector "ababcac"))
+
+
+
+Eingabe ist
+
+    ein Muster w der Länge n.
+
+Ausgabe ist
+
+    das Array N der Länge n+1.
+
+ i := 0       // Variable i zeigt immer auf die aktuelle Position
+ j := -1      // im Muster,  Variable j gibt die Länge des gefun-
+              // denen Präfixes an.
+ 
+ N[i] := j       // Der erste Wert ist immer -1
+ 
+ while i < n     // solange das Ende des Musters nicht erreicht ist
+ |
+ |   while j >= 0 and w[j] != w[i]   // Falls sich ein gefundenes
+ |   |                               // Präfix nicht verlängern lässt,
+ |   |   j := N[j]                   // nach einem kürzeren suchen.
+ |   |
+ |   end
+ |
+ |           // an dieser Stelle ist j=-1 oder w[i]=w[j]
+ |
+ |   i := i+1                // Unter dem nächsten Zeichen im Muster
+ |   j := j+1                // den gefundenen Wert (mindestens 0)
+ |   N[i] := j               // in die Präfix-Tabelle eintragen.
+ |
+ end
+
+(import (szi pascal)
+        (szi tuple)
+        (szi crement))
+
+(define kmp-prepare
+  (lambda (pattern)
+    (let* ((w (string->vector pattern))
+           (w-ref (make-vector-ref w))
+           (n (vector-length w))
+           (N (make-vector (+ n 1)))
+           (N-set! (make-vector-set N))
+           (N-ref (make-vector-ref N)))
+      (let ((i 0)
+            (j -1))
+        (N-set! i j)
+        (while (< i n)
+          (while (and (>= j 0)
+                      (not (equal? (w-ref j)
+                                   (w-ref i))))
+            (set! j (N-ref j)))
+          (inc! i)
+          (inc! j)
+          (N-set! i j))
+        N))))
+
+;; Knuth-Morris-Pratt
+
+(define (kmp-prepare pattern)
+  (let* ((p (string->vector pattern))
+         (n (vector-length p))
+         (N (make-vector (+ n 1))))
+    (let ((w (make-vector-ref p))
+          (N! (make-vector-set N))
+          (N (make-vector-ref N)))
+      (let loop ((i 0)
+                 (j -1))
+        (N! i j)
+        (when (< i n)
+          (while (and (>= j 0)
+                      (not (equal? (w j) (w i))))
+            (set! j (N j)))
+          (loop (+ i 1) (+ j 1)))))
+    N))
+
+(kmp-prepare "ababcabab")
+
+Eingabe sind
+
+    das Muster w der Länge n,
+    das Array N der Länge n+1 aus der ersten Phase, und
+    ein Text t der Länge m.
+
+Ausgabe sind
+
+    alle Positionen an denen w in t vorkommt.
+
+ i := 0   // Variable i zeigt immer auf die aktuelle Position im Text.
+ j := 0   // Variable j auf die aktuelle Position im Muster.
+ 
+ while i < m   // also Textende nicht erreicht
+ |
+ |   while j >= 0 and t[i] != w[j]      // Muster verschieben, bis
+ |   |                                  // Text und Muster an Stelle
+ |   |   j := N[j]                      // i,j übereinstimmen. Dabei
+ |   |                                  // Array N benutzen.
+ |   end
+ |
+ |   i := i + 1              // In Text und Muster je eine
+ |   j := j + 1              // Stelle weitergehen.
+ |
+ |   if j == n then          /// Ist das Ende des Musters erreicht
+ |   |                       // einen Treffer melden. Dieser begann
+ |   |   print i - n         // bereits n Zeichen früher.
+ |   |
+ |   |   j := N[j]           // Muster verschieben.
+ |   |
+ |   end if
+ |
+ end
+
+(define (knuth-morris-pratt pattern)
+  ;; prepare
+  (let* ((p (string->vector pattern))
+         (n (vector-length p))
+         (w (make-vector-ref p))
+         (N (make-vector (+ n 1)))
+         (N! (make-vector-set N))
+         (N (make-vector-ref N)))
+    (let loop ((i 0)
+               (j -1))
+      (N! i j)
+      (when (< i n)
+        (while (and (>= j 0)
+                    (not (equal? (w j) (w i))))
+          (set! j (N j)))
+        (loop (+ i 1) (+ j 1))))
+    (lambda (text)
+      ;; search
+      (let* ((t (string->vector text))
+             (m (vector-length t))
+             (t (make-vector-ref t)))
+        (let ((i 0)
+              (j 0))
+          (while (< i m)
+            (while (and (>= j 0) (not (equal? (t i) (w j))))
+              (set! j (N j)))
+            (inc! i)
+            (inc! j)
+            (when (equal? j n)
+              (display (- i n))
+              (newline)
+              (set! j (N j)))))))))
+
+((knuth-morris-pratt "ababcabab") "abababcbababcababcab")
