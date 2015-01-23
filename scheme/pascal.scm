@@ -6,7 +6,6 @@
                     expression
                     ...)))
        (let loop ()
-         (if condition
-             (begin
-               (thunk)
-               (loop))))))))
+         (when condition
+           (thunk)
+           (loop)))))))
