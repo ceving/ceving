@@ -1,0 +1,189 @@
+<HTML>
+<TITLE> Adapted from Wallingford's 810:154 Session 10 for 810:151 Scheme</TITLE>
+
+<BODY BGCOLOR="DCDCFF">
+
+<HR>
+<H4 ALIGN="center"> Adapted from Wallingford's 810:154                              </H4>
+<H4 ALIGN="center"> Programming Languages and Paradigms  </H4>
+<HR>
+
+
+
+    <H4>
+<FONT COLOR="FF0000">Friday, Feb 13th handout: </FONT>use of an <B>accumulator variable</B>, which allows the programmer
+         finer-tuned control over how the final answer is assembled</H4>
+<P>
+<HR>
+
+<H3> Accumulator Variables </H3>
+
+<P> Consider the standard recursive implementation of <TT>factorial</TT>:
+<PRE>
+    (define factorial
+      (lambda (n)
+        (if (zero? n)
+            1
+            (* n (factorial (- n 1))))))
+</PRE>
+
+<P> What happens on each recursive call?
+    <UL>
+    <LI> <TT>factorial</TT> must wait for the result of
+         <TT>(factorial (- n 1))</TT> before it can apply the <TT>*</TT>
+         procedure to <TT>n</TT> and the result.
+    <P>
+    <LI> To wait, it must remember the value of <TT>n</TT> and the value
+         of <TT>*</TT>.  As you've learned in prior courses, each call to
+         <TT>factorial</TT> requires its own stack frame to remember the
+         state of its computation.
+    <P>
+    <LI> This process is expensive in its use of space.  It is the reason
+         students tend to learn early to be wary of recursion for fear of
+         causing a stack overflow.
+    </UL>
+
+<P> The key: This procedure computes <I>all</I> of <TT>(factorial (- n 1))</TT>
+    for n-1 down to 0 before computing the value of <TT>(factorial n)</TT>!
+
+<P> If only we could write a procedure that evaluates the <TT>(* n ...)</TT>
+    part of the computation right away, the we would eliminate the need to save
+    up all those pending computations.
+
+    <A NAME="factorial-aps"></A>
+<P> We <I>can</I> do that, with a less straightforward procedure:
+<PRE>
+    (define factorial-aps
+      (lambda (n answer)
+        (if (zero? n)
+            answer
+            (factorial-aps (- n 1) (* n answer)))))
+</PRE>
+
+<P> This procedure evaluates the <TT>(* n ...)</TT> portion of its work
+    immediately!  It computes <TT>(factorial n)</TT> in reverse order,
+    evaluating <TT>(* n running-product)</TT> and passing that running
+    product one the recursive call that computes <TT>(factorial (- n 1))</TT>.
+
+<P> This procedure
+    offers a phenomenal performance improvement, in SPEED but especially in
+    SPACEused.  We will look at this performance improvement, and the reasons
+    for it,
+    <A HREF="#tail-recursion">later in the session</A>.
+
+<P> The formal parameter <TT>answer</TT> is an <B>accumulator variable</B>.
+    It accumulates the partial results of the computation in much the same
+    way a running product would in a loop.
+
+<P> Notice that using an accumulator variable usually requires us to use an
+    interface procedure, too, because we add the ACCUMULATOR as an EXTRA
+    ARGUMENT to pass on each recursive call.  The interface procedure passes
+    the initial value of the accumulator on the first call.  This value is
+    usually the identity of the operation being used.  Here, that is 1:
+<PRE>
+    (define factorial
+      (lambda (n)
+        (factorial-aps n 1)))
+</PRE>
+
+<P> By the way, the suffix <TT>-aps</TT> refers to <I>a</I>ccumulator
+    <I>p</I>assing <I>s</I>tyle, which is the name for this style of
+    programming.
+
+<P> [ A natural extension of this idea is to make the accumulator variable
+    be a <I>procedure</I> whose application to the initial value gives the
+    desired answer.  This may seem strange, but realize that we can pass that
+    procedure to any other procedure at any time.   When the accumulator is
+    a procedure, we usually refer to it as a <B>continuation</B>, because it
+    is the continuation of the processing to be done.  Passing continuations
+    around in -- so-called "continuation passing style" -- makes it possible
+    to implement all sorts of exotic control structures, such as exceptions,
+    threads, backtracking, and the like.  Scheme is a minimalist language, in
+    that it tends to provide only a necessary core of operations out of which
+    all other operations can be built.  That accounts for its lack of loops,
+    for instance, which can be
+    <A HREF="#tail-recursive">simulated recursively</A>.
+    Scheme provides support for accessing the
+    <A HREF="XXXXX">current continuation</A>
+    of a computation, because out of that we can implement all the control
+    structures we could desire! ]
+<P>
+<HR>
+
+
+
+<P> Where does the speed up come form?  The accumulator variable enables
+    us to control the order of processing.  This has the feel of imperative
+    programming, the sort you are used to doing in Java and Ada.  Here, we
+    are just doing it through the order of procedure applications!  Just
+    as our aps-style solution to <TT>factorial</TT>
+    <A HREF="#factorial-aps">given above</A>
+    begins to resemble a loop, our aps-style solution to <TT>flatten</TT>
+    begins to resemble imperative, sequential programming.  That the use of
+    an accumulator variable gives us these two feelings is not a coincidence;
+    they are closely related!
+<P>
+<HR>
+
+<P> Finally, accumulator passing style often leads to a special case of
+    recursion, one that isn't really recursive at all.  Let's finally
+    consider that now...
+<P>
+<HR>
+
+     <A NAME="tail-recursion"></A>
+<H3> Tail Recursion </H3>
+
+<P> [ Sorry, but this is still a bit rough, more an outline than lecture
+    notes. ]
+
+<P> Think about our accumulator-passing version of the factorial procedure:
+
+<P> It is <I>iterative</I>: it counts down from n to 0.
+
+<P> It is <I>imperative</I>: its assigns a value to variable on each pass.
+    It assigns only once, though, on each pass.
+
+<P> This starts to look a lot like a for loop...
+
+<P> And at run time, it can be!  Consider the state of the calling procedure
+    at the moment it makes its recursive call.  The value of the calling
+    procedure is the value of the called procedure.  The caller does not
+    need to remember any pending operations or even the values of its
+    formal parameters!
+
+<P> This is <B>tail recursion</B>.
+
+<P> The presence of tail recursion means that the recursive call can be
+    implemented in place, assigning the values passed to the same versions
+    of the formal parameters created for the calling procedure and using a
+    <TT>goto</TT> to transfer control back to the top of the calling procedure.
+
+<P> In functional programming, we use recursion for all sorts of repetitive
+    behavior.  Tail recursion is common, because of the use of accumulator
+    variables to control order of execution and because of the run-time
+    behavior we've just seen.  If tail recursion is so common and has such
+    nice run-time behavior that is so nice, it would be nice if our interpreter
+    would optimize this behavior.
+
+<P> By definition, Scheme does.
+    
+       The Scheme language definition
+    specifies that every Scheme interpreter must optimize tail recursion
+    away into a <TT>goto</TT>!
+
+<P> Accumulator passing style often leads to tail recursive code.
+   
+    <P>
+    <H3>factorial-aps is tail recursive!</H3>
+ 
+
+<P> Tail recursion is a topic of much research in the area of programming
+    languages.  Java is not properly tail recursive, and making it so would
+    complicate the virtual machine a bit...  But it might be worth the effort!
+    [Some Java compilers optimize tail recursion...]
+<P>
+<HR>
+
+</BODY>
+</HTML>
