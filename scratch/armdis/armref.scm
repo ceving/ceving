@@ -580,9 +580,6 @@ Ausgabe ist
  |
  end
 
-(import (szi pascal)
-        (szi tuple)
-        (szi crement))
 
 (define kmp-prepare
   (lambda (pattern)
@@ -660,6 +657,10 @@ Ausgabe sind
  |
  end
 
+(import (szi pascal)
+        (szi tuple)
+        (szi crement))
+
 (define (knuth-morris-pratt pattern)
   ;; prepare
   (let* ((p (string->vector pattern))
@@ -694,3 +695,139 @@ Ausgabe sind
               (set! j (N j)))))))))
 
 ((knuth-morris-pratt "ababcabab") "abababcbababcababcab")
+
+((knuth-morris-pratt "nl") "123nl234nl345")
+
+;; Knuth-Morris-Pratt
+(define (make-kmp-delimited-reader pattern)
+  ;; prepare
+  (let* ((p (string->vector pattern))
+         (n (vector-length p))
+         (w (make-vector-ref p))
+         (N (make-vector (+ n 1)))
+         (N! (make-vector-set N))
+         (N (make-vector-ref N)))
+    (let loop ((i 0)
+               (j -1))
+      (N! i j)
+      (when (< i n)
+        (while (and (>= j 0)
+                    (not (equal? (w j) (w i))))
+          (set! j (N j)))
+        (loop (+ i 1) (+ j 1))))
+    ;; make reader
+    (lambda (port)
+      (let ((read-char (lambda () (read-char port))))
+        (lambda ()
+          ;; search
+          (let loop ((c (read-char))
+                     (out (list))
+                     (j 0))
+            (if (eof-object? c)
+                (if (null? out)
+                    c
+                    (list->string (reverse out)))
+                (begin
+                  (while (and (>= j 0) (not (equal? c (w j))))
+                    (set! j (N j)))
+                  (inc! j)
+                  (if (equal? j n)
+                      (let ((token (list->string (reverse (list-tail out (- n 1))))))
+                        (set! j (N j))
+                        (set! out (list))
+                        token)
+                      (loop (read-char) (cons c out) j))))))))))
+
+((knuth-morris-pratt        "ababcabab")
+ (open-input-string "abababcbababcababcab"))
+
+((knuth-morris-pratt "nl")
+ (open-input-string "123nl234nl456"))
+
+(let ((reader ((knuth-morris-pratt "nl")
+               (open-input-string "123nl234nl456"))))
+  (let loop ((n 10)
+             (token (reader)))
+    (when (> n 0)
+      (unless (eof-object? token)
+        (display token)
+        (newline)
+        (loop (- n 1) (reader))))))
+
+
+(until (eof-object? token read-char)
+  (display token)
+  (newline))
+
+(define-syntax while
+  (syntax-rules ()
+    ((while condition expression0 expression1 ...)
+     (letrec ((loop (lambda ()
+                      (when condition
+                        expression0
+                        expression1
+                        ...
+                        (loop)))))
+       (loop)))))
+
+(define-syntax until
+  (syntax-rules ()
+    ((until (variable condition action) expression0 expression1 ...)
+     (letrec ((loop (lambda (variable)
+                      (unless (condition variable)
+                        expression0
+                        expression1
+                        ...
+                        (loop variable)))))
+       (loop ))
+
+(define-syntax until
+  (syntax-rules ()
+    ((until (var seq) body ...)
+     (let loop ((var (seq)))
+       (when (positive? var)
+         body
+         ...
+         (loop (seq)))))))
+
+(until (x (make-sequence 10 (lambda (x) (- x 1))))
+  (display x)
+  (newline))
+
+
+(let ((x 10))
+  (while (positive? x)
+    (display x)
+    (newline)
+    (set! x (- x 1))))
+
+(define (make-sequence start increment)
+  (let ((next (lambda () start)))
+    (lambda ()
+      (let ((current (next)))
+        (set! next (lambda () (increment current)))
+        current))))
+
+(let ((s (make-sequence 10 (lambda (x) (- x 1)))))
+  (list (s) (s) (s) (s)))
+  
+
+(let ((s (make-sequence 10 (lambda (x) (- x 1)))))
+  (while (positive? )
+    (display x)
+    (newline)))
+
+(define sequence (make-sequence 10 (lambda (x) (- x 1))))
+
+(until (negative? x)
+       
+       (display x))
+
+
+
+(let ((body (lambda () (display token) (newline))))
+  (let loop ()
+    (let ((token (read-char)))
+      (unless (predicate? token)
+        (body)
+        (loop)))))
