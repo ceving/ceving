@@ -4,11 +4,11 @@
 
 (define-syntax while
   (syntax-rules ()
-    ((while condition expression ...)
-     (let ((thunk (lambda ()
-                    expression
-                    ...)))
-       (let loop ()
-         (when condition
-           (thunk)
-           (loop)))))))
+    ((while condition expression0 expression1 ...)
+     (letrec ((loop (lambda ()
+                      (when condition
+                        expression0
+                        expression1
+                        ...
+                        (loop)))))
+       (loop)))))
