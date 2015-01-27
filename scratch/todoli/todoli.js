@@ -9,13 +9,35 @@ function set_append_transition(from_state, to_state, action) {
 }
 
 function append_div (cls) {
-	div = document.createElement('div');
+	var div = document.createElement('div');
 	return $(div)
 		.addClass(cls)
 		.attr('contenteditable', 'true')
 		.html(cls)
 		.click(function() { return false; })
-		.appendTo($(document.body));
+		.keypress(function(event) {
+			if (event.altKey) {
+				switch (event.key) {
+				case "Enter":
+					append_div (cls);
+					break;
+				case "Up":
+				case "ArrowUp":
+					$(div).prev().focus();
+					break;
+				case "Down":
+				case "ArrowDown":
+					$(div).next().focus();
+					break;
+				case "Right":
+					break;
+				case "Left":
+					break;
+				}
+			}
+		})
+		.appendTo($(document.body))
+		.focus();
 }
 
 set_append_transition("headline", "paragraph", function() {
@@ -27,9 +49,15 @@ set_append_transition("paragraph", "headline", function() {
 });
 		
 $(document).ready(function(){
-	alert ("test");
+	console.log("ready");
+	if (false)
 	$("body").click(function(event){
-		alert (event.target.tagName);
+		console.log(event.target.tagName);
 		(append_transitions[append_state])();
+	});
+	$("body").keypress(function(event) {
+		//console.log(event);
+		if (window.getSelection().getRangeAt(0).startOffset)
+			console.log(event);
 	});
 });
