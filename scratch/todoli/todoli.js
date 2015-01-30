@@ -8,34 +8,20 @@ function set_append_transition(from_state, to_state, action) {
 	};
 }
 
-function append_div (cls) {
+function append_div (cls)
+{
 	var div = document.createElement('div');
+	var addnew_div = function() { append_div (cls); };
+	var focus_prev = function() { $(div).prev().focus(); }
+	var focus_next = function() { $(div).next().focus(); }
 	return $(div)
 		.addClass(cls)
 		.attr('contenteditable', 'true')
 		.html(cls)
 		.click(function() { return false; })
-		.keypress(function(event) {
-			if (event.altKey) {
-				switch (event.key) {
-				case "Enter":
-					append_div (cls);
-					break;
-				case "Up":
-				case "ArrowUp":
-					$(div).prev().focus();
-					break;
-				case "Down":
-				case "ArrowDown":
-					$(div).next().focus();
-					break;
-				case "Right":
-					break;
-				case "Left":
-					break;
-				}
-			}
-		})
+		.keypress(keystroke(["A-Enter", addnew_div],
+												[["A-Up", "A-ArrowUp"], focus_prev],
+												[["A-Down", "A-ArrowDown"], focus_next]))
 		.appendTo($(document.body))
 		.focus();
 }
@@ -76,7 +62,6 @@ function console_log (event) { console.log(event); }
 		
 $(document).ready(function(){
 	console.log("ready");
-	if (false)
 	$("body").click(function(event){
 		console.log(event.target.tagName);
 		(append_transitions[append_state])();

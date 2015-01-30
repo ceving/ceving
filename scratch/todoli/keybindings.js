@@ -128,11 +128,11 @@ var quotekey;
 					}
 				}
 				else {
-					if (stroke.length == 0)
+					if (stroke.length == 0) {
 						// If the key does not match at all we keep the event
 						// bubbling.
 						return true;
-					else {
+					} else {
 						// When we get a non matching key in a sequence of keys
 						// the previously keys matching a keystroke are lost.  An
 						// error is loged in this case.
