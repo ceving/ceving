@@ -160,15 +160,3 @@ var quotekey;
 		};
 	};
 })();
-
- //var save_file;
- //var find_file;
- //var next_paragraph;
- //var end_paragraph;
- //
- //console.debug(
- //	keystroke(
- //		["C-x", "s", save_file],
- //		["C-x", "f", find_file],
- //		["C-a", ["A-Down", "A-ArrowDown"], next_paragraph],
- //		["A-Enter", end_paragraph]));
