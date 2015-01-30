@@ -70,6 +70,9 @@ var click_datainput;
 		$(active).focus();
 	};
 })();
+
+function console_log (event) { console.log(event); }
+
 		
 $(document).ready(function(){
 	console.log("ready");
@@ -78,18 +81,10 @@ $(document).ready(function(){
 		console.log(event.target.tagName);
 		(append_transitions[append_state])();
 	});
-	$("body").keypress(function(event) {
-		console.log(event);
-		if (event.ctrlKey == true) {
-			switch (event.key) {
-			case "s":
-			case "x":
-				console.log ("Got Ctrl-" + event.key);
-				return false;
-			}
-		}
-		if (window.getSelection().getRangeAt(0).startOffset)
-			console.log(event);
-	});
+
+	document.body.onkeypress=keystroke(
+		["C-s", "x", console_log],
+		["C-1", quotekey(1)]);
+
 	add_datainput();
 });

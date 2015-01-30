@@ -8,88 +8,60 @@
 // correct order is not checked.  If the order is wrong the binding
 // gets ignored during the keystroke dispatching.
 //
-// Example 1: A shortcut for "C-s x" and "C-1".
+// Example:
 //
-//   function console_log (event) { console.log(event); }
+//   1.) Define some kind of action for the key stroke:
 //
-//   document.body.onkeypress=keystroke(
-//     ["C-s", "x", console_log],
-//     ["C-1", quotekey(1)]);
+//     function action(event) { console.log(event); }
 //
-// The example defines a shortcut for "C-s x", which displays the
-// keypress event and defines a shortcut for "C-1", which quotes one
-// key, to be able to enter the "C-s" key shadowed by the first
-// shortcut.
+//   2.) Define the keystroke:
 //
-// A keystroke is given by an array of keys.  Each key can be a string
-// or an array of strings specifying alternatives for the same
-// command.  This is sometimes necessary, when keys are renamed like
-// "Down" and "ArrowDown" for example.
+//     define_keystroke (["C-s", "x"], action);
 //
-// Example 2: Key alternatives.
+//   3.) Define a quoting keystroke to be able to enter the keystroke
+//   shadowed by the above definition:
 //
-//   document.body.onkeypress=keystroke(
-//     [["A-Down", "A-ArrowDown"], console_log]);
+//     define_keystroke (["C-1"], quote_keystroke(1));
+//
+//   4.) Activate the keystroke dispatching for the body of the
+//   document:
+//
+//     document.body.onkeypress=dispatch_keystroke;
 //
 
-var keystroke;
-var quotekey;
+var define_keystroke;
+var dispatch_keystroke;
+var quote_keystroke;
+var debug_keystroke_bindings;
 
-(function () {
+(function() {
+	// The keystroke bindings are shared by the definition, which sets
+	// the bindings, and the dispatching, which reads the bindings.
+	var bindings = {};
+	debug_keystroke_bindings = function () { console.debug(bindings); };
 
-	var QuoteKey = function (n) { this.n = n || 1; };
-	quotekey = function (n) { return new QuoteKey(n); };
-
-	// Recursively set the keystroke.  The recursion depth is given by
-	// the length of the keystroke.
-
-	var set_key = function (scope, key, stroke, func)
-	{
-		if (stroke.length > 0) {
-			if (!(key in scope))
-				scope[key] = {};
-			set_stroke (scope[key], stroke, func);
-		} else
-			scope[key] = func;
-	}
-
-	var set_stroke = function (scope, stroke, func)
-	{
-		if (stroke.length <= 0)
-			console.error ("Empty keystroke");
-		else {
-			var key = stroke.shift();
-			if (key instanceof Array)
-				for (var i=0; i < key.length; i++)
-					set_key (scope, key[i], stroke, func);
-			else
-				set_key (scope, key, stroke, func);
-		}
-	}
-
-	keystroke = function ()
-	{
-		// The keystroke bindings are shared by the definition, which sets
-		// the bindings, and the dispatching, which reads the bindings.
-		var bindings = {};
-
-		// Quoting
-		var quote = 0;
-
-		for (var i=0; i < arguments.length; i++) {
-			var argument = arguments[i];
-			if (!(argument instanceof Array))
-				console.error ("Array argument required", argument);
+	(function () {
+		// Recursively set the keystroke.  The recursion depth is given by
+		// the length of the keystroke.
+		var recset = function (scope, keystroke, func) {
+			if (keystroke.length <= 0)
+				console.error ("Empty keystroke");
 			else {
-				var action = argument.pop();
-				if (action instanceof QuoteKey) {
-					var n = action.n;
-					action = function () { quote = n; };
-				}
-				set_stroke (bindings, argument, action);
+				var key = keystroke.shift();
+				if (keystroke.length > 0) {
+					if (!(key in scope))
+						scope[key] = {};
+					recset (scope[key], keystroke, func);
+				} else
+					scope[key] = func;
 			}
-		}
+		};
+		define_keystroke = function (keystroke, func) {
+			recset (bindings, keystroke, func);
+		};
+	})();
 
+	(function () {
 		// Dispatching requires a state between consecutive keys.
 		var stroke; // List of already matched keys of a stroke.
 		var scope;  // Scope of keys which can complete the stroke.
@@ -101,8 +73,15 @@ var quotekey;
 		};
 		reset_stroke ();
 
+		// Quoting
+		var quote = 0;
+		quote_keystroke = function (n) {
+			if (typeof n != 'undefined') n = 1;
+			return function() { quote = n; };
+		};
+
 		// Dispatching
-		return function (event) {
+		dispatch_keystroke = function (event) {
 			if (event.type == "keypress") {
 				// Pass the key through if requested.
 				if (quote > 0) {
@@ -158,17 +137,5 @@ var quotekey;
 			// keypress event.
 			return true;
 		};
-	};
+	})();
 })();
-
- //var save_file;
- //var find_file;
- //var next_paragraph;
- //var end_paragraph;
- //
- //console.debug(
- //	keystroke(
- //		["C-x", "s", save_file],
- //		["C-x", "f", find_file],
- //		["C-a", ["A-Down", "A-ArrowDown"], next_paragraph],
- //		["A-Enter", end_paragraph]));
