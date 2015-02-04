@@ -49,3 +49,42 @@ var capturing_d2;
 		d2 = 2;
 	};
 })();
+
+	$("body").keypress(function(event) {
+		console.log(event);
+		if (event.ctrlKey == true) {
+			switch (event.key) {
+			case "s":
+			case "x":
+				console.log ("Got Ctrl-" + event.key);
+				return false;
+			}
+		}
+		if (window.getSelection().getRangeAt(0).startOffset)
+			console.log(event);
+	});
+
+
+			
+					
+			function(event) {
+			if (event.altKey) {
+				switch (event.key) {
+				case "Enter":
+					append_div (cls);
+					break;
+				case "Up":
+				case "ArrowUp":
+					$(div).prev().focus();
+					break;
+				case "Down":
+				case "ArrowDown":
+					$(div).next().focus();
+					break;
+				case "Right":
+					break;
+				case "Left":
+					break;
+				}
+			}
+		}

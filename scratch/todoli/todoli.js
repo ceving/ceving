@@ -16,7 +16,6 @@ function append_div (cls)
 	var focus_next = function() { $(div).next().focus(); }
 	return $(div)
 		.addClass(cls)
-		.attr('contenteditable', 'true')
 		.html(cls)
 		.click(function() { return false; })
 		.keypress(keystroke(["A-Enter", addnew_div],
@@ -68,7 +67,7 @@ $(document).ready(function(){
 	});
 
 	document.body.onkeypress=keystroke(
-		["C-s", "x", console_log],
+		["C-s", "e", console_log],
 		["C-1", quotekey(1)]);
 
 	add_datainput();

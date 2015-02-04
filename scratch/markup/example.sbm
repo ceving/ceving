@@ -1,0 +1,19 @@
+{define greeting Hello World!}
+
+{title {greeting}}
+{h1 {greeting}}
+
+{ul {map li A B C}}
+
+
+\section{Hello World!}
+Zeile 1
+\p
+Zeile 2
+
+
+* Hello World!
+Zeile 1
+
+Zeile 2
+
