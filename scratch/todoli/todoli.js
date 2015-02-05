@@ -61,6 +61,7 @@ function console_log (event) { console.log(event); }
 		
 $(document).ready(function(){
 	console.log("ready");
+	if (false)
 	$("body").click(function(event){
 		console.log(event.target.tagName);
 		(append_transitions[append_state])();

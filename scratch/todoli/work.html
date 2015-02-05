@@ -7,14 +7,54 @@
 		<script src="todoli.js"></script>
     <link href="todoli.css" rel="stylesheet" type="text/css">
 		<script id="data" type="application/xml">
-			<task id="1">
-				<name>Aktion 1</name>
-			</task>
+			<info id="1">
+				<text>Der Himmel ist blau.</text>
+			</info>
 			<task id="2">
-				<name>Aktion 2</name>
+				<text>Himmel rot färben.</text>
+				<info rid="1"/>
+				<wait rid="3"/>
 			</task>
+			<wait id="3">
+				<text>Auf Gottes Beistand warten.</text>
+			</wait>
 		</script>
 	</head>
-	<body contenteditable="true">
+	<body>
+		<div contenteditable="false" class="paragraph">
+			<span class="symbol">•</span>
+			<div contenteditable="true" class="text">Some complicate thing</div>
+			<div contenteditable="false" class="paragraph">
+				<span class="symbol">☐</span>
+				<div contenteditable="true" class="text">A task to be done</div>
+			</div>
+			<div contenteditable="false" class="paragraph">
+				<span class="symbol">☑</span>
+				<div contenteditable="true" class="text">
+					Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
+					diam nonumy eirmod tempor invidunt ut labore et dolore magna
+					aliquyam erat, sed diam voluptua. At vero eos et accusam et
+					justo duo dolores et ea rebum. Stet clita kasd gubergren, no
+					sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem
+					ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+					nonumy eirmod tempor invidunt ut labore et dolore magna
+					aliquyam erat, sed diam voluptua. At vero eos et accusam et
+					justo duo dolores et ea rebum. Stet clita kasd gubergren, no
+					sea takimata sanctus est Lorem ipsum dolor sit amet.
+				</div>
+			</div>
+			<div contenteditable="false" class="paragraph">
+				<span class="symbol">☚</span>
+				<div contenteditable="true" class="text">Waiting for an apple.</div>
+				(<span class="date">since last week</span>)
+				<div contenteditable="false" class="paragraph">
+					<span class="symbol">☞</span>
+					<div contenteditable="true" class="text">Got a lemmon.</div>
+					(<span class="date">2 days ago</span>)
+				</div>
+			</div>
+		</div>
+
+		<img class="calendar" src="calendar.svg" alt="" />
 	<body/>
 </html>

@@ -1,11 +1,67 @@
-body { position: absolute; top: 0; bottom: 0; left: 0; right: 0; }
+body {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background-color: #DDD;
+}
+
+
+div.info {
+		color: black;
+}
+
+div.todo {
+		color: blue;
+}
+
+div.wait {
+		color: orange;
+}
+div.wait:before {
+		content: "&#9203;";
+}
 
 div.headline {
 		color: red;
 }
 
 div.paragraph {
-		color: blue;
+		margin-left: 2em;
+}
+
+body > div.paragraph {
+		margin: 0;
+}
+
+div.paragraph > span.symbol {
+		vertical-align: top;
+		cursor: default;
+		font-size: 1.5em;
+}
+div.text {
+		margin-top: 0.5ex;
+		margin-bottom: 0.5ex;
+		display: inline-block;
+    word-break: normal;
+		max-width: 60em;
+		background-color: #EEE;
+}
+
+div.text:focus {
+		background-color: #FFF;
+}
+
+#box {
+		fill:rgb(0,0,255);
+		stroke-width:3;
+		stroke:rgb(0,0,0)
+}
+
+img.calendar {
+		height: 1em;
+		vertical-align: baseline;
 }
 
 #datafile {
