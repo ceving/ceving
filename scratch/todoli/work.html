@@ -21,36 +21,117 @@
 		</script>
 	</head>
 	<body>
-		<div contenteditable="false" class="paragraph">
-			<span class="symbol">•</span>
-			<div contenteditable="true" class="text">Some complicate thing</div>
-			<div contenteditable="false" class="paragraph">
-				<span class="symbol">☐</span>
-				<div contenteditable="true" class="text">A task to be done</div>
+		<div contenteditable="false" class="node">
+			<div class="head">
+				<div class="symbol">•</div>
+				<div contenteditable="true" class="text editable">Some complicate thing</div>
+				<div class="info"></div>
 			</div>
-			<div contenteditable="false" class="paragraph">
-				<span class="symbol">☑</span>
-				<div contenteditable="true" class="text">
-					Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-					diam nonumy eirmod tempor invidunt ut labore et dolore magna
-					aliquyam erat, sed diam voluptua. At vero eos et accusam et
-					justo duo dolores et ea rebum. Stet clita kasd gubergren, no
-					sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem
-					ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-					nonumy eirmod tempor invidunt ut labore et dolore magna
-					aliquyam erat, sed diam voluptua. At vero eos et accusam et
-					justo duo dolores et ea rebum. Stet clita kasd gubergren, no
-					sea takimata sanctus est Lorem ipsum dolor sit amet.
+
+			<div contenteditable="false" class="node">
+				<div class="head">
+					<div class="symbol">•</div>
+					<div contenteditable="true" class="text editable">SN-E1254</div>
+					<div class="info">Lenovo T430</div>
+				</div>
+				<table class="prop">
+					<tbody>
+						<tr>
+							<td>
+								<div contenteditable="true" class="editable">Address</div>
+							</td>
+							<td>
+								<div contenteditable="true" class="editable">10.10.10.1</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div contenteditable="true" class="editable">Netmask</div>
+							</td>
+							<td>
+								<div contenteditable="true" class="editable">255.255.255.0</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div contenteditable="true" class="editable">Broadcast</div>
+							</td>
+							<td>
+								<div contenteditable="true" class="editable">10.10.10.255</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div contenteditable="true" class="editable">Gateway</div>
+							</td>
+							<td>
+								<div contenteditable="true" class="editable">10.10.10.254</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div contenteditable="true" class="desc editable">
+					Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
+					sed diam nonumy eirmod tempor invidunt ut labore et dolore
+					magna aliquyam erat, sed diam voluptua. At vero eos et
+					accusam et justo duo dolores et ea rebum. Stet clita kasd
+					gubergren, no sea takimata sanctus est Lorem ipsum dolor
+					sit amet. Lorem ipsum dolor sit amet, consetetur
+					sadipscing elitr, sed diam nonumy eirmod tempor invidunt
+					ut labore et dolore magna aliquyam erat, sed diam
+					voluptua. At vero eos et accusam et justo duo dolores et
+					ea rebum. Stet clita kasd gubergren, no sea takimata
+					sanctus est Lorem ipsum dolor sit amet.
 				</div>
 			</div>
-			<div contenteditable="false" class="paragraph">
-				<span class="symbol">☚</span>
-				<div contenteditable="true" class="text">Waiting for an apple.</div>
-				(<span class="date">since last week</span>)
-				<div contenteditable="false" class="paragraph">
-					<span class="symbol">☞</span>
-					<div contenteditable="true" class="text">Got a lemmon.</div>
-					(<span class="date">2 days ago</span>)
+
+			<div contenteditable="false" class="node">
+				<div class="head">
+					<div class="symbol">☐</div>
+					<div contenteditable="true" class="text editable">A task to be done</div>
+					<div class="info"></div>
+				</div>
+			</div>
+
+			<div contenteditable="false" class="node">
+				<div class="head">
+					<div class="symbol">☑</div>
+					<div contenteditable="true" class="text editable">
+						Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
+						sed diam nonumy eirmod tempor invidunt ut labore et dolore
+						magna aliquyam erat, sed diam voluptua. At vero eos et
+						accusam et justo duo dolores et ea rebum. Stet clita kasd
+						gubergren, no sea takimata sanctus est Lorem ipsum dolor
+						sit amet. Lorem ipsum dolor sit amet, consetetur
+						sadipscing elitr, sed diam nonumy eirmod tempor invidunt
+						ut labore et dolore magna aliquyam erat, sed diam
+						voluptua. At vero eos et accusam et justo duo dolores et
+						ea rebum. Stet clita kasd gubergren, no sea takimata
+						sanctus est Lorem ipsum dolor sit amet.
+					</div>
+					<div class="info">Lorem ipsum dolor sit amet, <br>consetetur
+						sadipscing elitr, sed diam nonumy eirmod tempor invidunt
+						ut labore et dolore magna aliquyam erat, sed diam
+						voluptua. At vero eos et accusam et justo duo dolores et
+						ea rebum. Stet clita kasd gubergren, no sea takimata
+						sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor
+						sit amet, consetetur</div>
+				</div>
+			</div>
+			<div contenteditable="false" class="node">
+				<div class="head">
+					<div class="symbol">☚</div>
+					<div contenteditable="true" class="text editable">Waiting for an apple.</div>
+					<div class="info"><span class="date">since last week</span></div>
+				</div>
+				<div contenteditable="false" class="node">
+					<div class="head">
+						<div class="symbol">☞</div>
+						<div contenteditable="true" class="text editable">Got a lemmon.</div>
+						<div class="info">
+							<span class="date">2 days ago</span>; <span>p</span>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

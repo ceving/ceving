@@ -1,10 +1,20 @@
+.editable {
+		background-color: #F8F8F8;
+		padding-left: 0.5ex;
+		padding-right: 0.5ex;
+}
+.editable:focus {
+		background-color: #FFFFFF;
+}
+
 body {
 		position: absolute;
 		top: 0;
 		bottom: 0;
 		left: 0;
 		right: 0;
-		background-color: #DDD;
+		background-color: #F0F0F0;
+		margin: 0;
 }
 
 
@@ -27,30 +37,82 @@ div.headline {
 		color: red;
 }
 
-div.paragraph {
+div.node, table.prop, div.desc {
 		margin-left: 2em;
 }
 
-body > div.paragraph {
+body > div.node {
 		margin: 0;
 }
 
-div.paragraph > span.symbol {
-		vertical-align: top;
-		cursor: default;
-		font-size: 1.5em;
-}
-div.text {
-		margin-top: 0.5ex;
-		margin-bottom: 0.5ex;
-		display: inline-block;
-    word-break: normal;
-		max-width: 60em;
-		background-color: #EEE;
+div.head {
+		display: flex;
+		margin-top: 1ex;
+		margin-bottom: 1ex;
+		white-space: nowrap;
 }
 
-div.text:focus {
-		background-color: #FFF;
+div.head * {
+		white-space: normal;
+}
+
+div.head > * {
+		vertical-align: top;
+		display: inline-block;
+}
+
+div.head > div.symbol {
+		cursor: default;
+		width: 2em;
+		text-align: center;
+}
+
+div.head > div.text {
+    word-break: normal;
+		max-width: 40em;
+}
+
+div.head > div.info {
+		margin-left: 1em;
+		max-width: 30em;
+}
+
+div.head > div.info:empty {
+		display: none;
+}
+
+div.head > div.info:before {
+		content: "(";
+}
+
+div.head > div.info:after {
+		content: ")";
+}
+
+table.prop {
+		margin-top: 1ex;
+		margin-bottom: 1ex;
+		border: 0;
+		border-collapse: collapse;
+}
+
+table.prop td {
+		background-color: #F8F8F8;
+}
+
+td + td {
+		border-left: 1ex solid #F0F0F0;
+}
+
+tr + tr {
+		border-top: 3pt solid #F0F0F0;
+}
+
+div.desc {
+		max-width: 70em;
+		background-color: #F8F8F8;
+		margin-top: 1ex;
+		margin-bottom: 1ex;
 }
 
 #box {
