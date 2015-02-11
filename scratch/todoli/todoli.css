@@ -15,8 +15,39 @@ body {
 		right: 0;
 		background-color: #F0F0F0;
 		margin: 0;
+		display: flex;
+		flex-flow: column;
+		/* overflow: hidden; */
 }
 
+#main-header {
+		width: 100%;
+		background-color: #FFF0F0;
+}
+
+/* fix: http://codepen.io/anon/pen/ByJVzY */
+
+#main-columns {
+		flex-grow: 1;
+		display: flex;
+		flex-flow: row wrap;
+		overflow: auto;
+		max-height: 100%;
+}
+
+#main-nav {
+		background-color: #FFFFF0;
+}
+
+#main-body {
+		flex-grow: 1;
+		max-height: 100%
+		overflow: auto;
+}
+
+#main-help {
+		background-color: #F0FFF0;
+}
 
 div.info {
 		color: black;
@@ -69,12 +100,12 @@ div.head > div.symbol {
 
 div.head > div.text {
     word-break: normal;
-		max-width: 40em;
+		max-width: 30em;
 }
 
 div.head > div.info {
 		margin-left: 1em;
-		max-width: 30em;
+		max-width: 19em;
 }
 
 div.head > div.info:empty {
@@ -109,7 +140,7 @@ tr + tr {
 }
 
 div.desc {
-		max-width: 70em;
+		max-width: 50em;
 		background-color: #F8F8F8;
 		margin-top: 1ex;
 		margin-bottom: 1ex;

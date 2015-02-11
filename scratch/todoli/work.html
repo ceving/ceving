@@ -4,99 +4,109 @@
 		<meta charset="UTF-8">
 		<script src="jquery-2.1.3.min.js"></script>
 		<script src="keybindings.js"></script>
+		<script src="guid.js"></script>
 		<script src="todoli.js"></script>
     <link href="todoli.css" rel="stylesheet" type="text/css">
 		<script id="data" type="application/xml">
-			<info id="1">
-				<text>Der Himmel ist blau.</text>
+			<person id="baea720d-631b-abe7-3bb2-31f2630311ec">
+				<first>Peter</first>
+				<last>Muster</last>
+			</person>
+			<person id="d59ed8fc-7e01-8d20-9e87-39ef63c182b7">
+				<first>Drücke</first>
+				<last>Berger</last>
+			</person>
+			<person id="e61a21bd-bf8f-5736-0ed1-345caa9a4965">
+				<first>Hans</first>
+				<last>Guck-in-die-Luft</last>
+			</person>
+			<info id="f1b78b73-fbac-02a2-e015-ba2a433338ca">
+				<topic>Der Himmel ist blau.</topic>
+				<essay>
+					Die blaue Farbe des Himmels entsteht durch die Atmosphäre.<br/>
+					<br/>
+					Die Rayleight-Streuung von Licht an den Sauerstoff- und
+					Stickstoff-Molekülen in der Athmosphäre fürt in Kombination
+					mit dem Sachverhalt, dass blaues Licht eine höhere
+					Wellenlänge hat und dadurch stärker gestreut wird, dazu,
+					dass der Himmel blau erscheint.
+				</essay>
 			</info>
-			<task id="2">
-				<text>Himmel rot färben.</text>
-				<info rid="1"/>
-				<wait rid="3"/>
-			</task>
-			<wait id="3">
-				<text>Auf Gottes Beistand warten.</text>
-			</wait>
-		</script>
-	</head>
-	<body>
-		<div contenteditable="false" class="node">
-			<div class="head">
-				<div class="symbol">•</div>
-				<div contenteditable="true" class="text editable">Some complicate thing</div>
-				<div class="info"></div>
-			</div>
-
+			<task id="e1a5ec81-e64d-b994-2da0-3e38839d4c99">
+				<topic>Himmel rot färben.</topic>
+				<devolved person="baea720d-631b-abe7-3bb2-31f2630311ec"/>
+				<requires task="715ced8c-ab8d-bd09-b636-43719872802e"/>
+				<note>Dies bedeutet täglich beten.</note>
+				<log time="2015-01-02">Vater unser</log>
+				<log time="2015-01-03">Ave Maria</log>
+</entity>
+<task id="715ced8c-ab8d-bd09-b636-43719872802e">
+	<topic>Auf Gottes Beistand warten.</topic>
+	<devolved person="d59ed8fc-7e01-8d20-9e87-39ef63c182b7"/>
+</task>
+<task id="3ca7fcc6-814b-cb1c-3025-ce464e9b6fe4">
+	<topic>Auf Sonnenfinsternis warten.</topic>
+	<devolved time="2015-01-05" person="e61a21bd-bf8f-5736-0ed1-345caa9a4965"/>
+	<involved person="baea720d-631b-abe7-3bb2-31f2630311ec"/>
+	<finished time="2015-01-07" person="e61a21bd-bf8f-5736-0ed1-345caa9a4965"/>
+	<accepted time="2015-01-08" person="e61a21bd-bf8f-5736-0ed1-345caa9a4965"/>
+</task>
+</script>
+</head>
+<body>
+	<header id="main-header">Überschrift</header>
+	<div id="main-columns">
+		<nav id="main-nav">Navigation</nav>
+		<section id="main-body">
 			<div contenteditable="false" class="node">
 				<div class="head">
 					<div class="symbol">•</div>
-					<div contenteditable="true" class="text editable">SN-E1254</div>
-					<div class="info">Lenovo T430</div>
-				</div>
-				<table class="prop">
-					<tbody>
-						<tr>
-							<td>
-								<div contenteditable="true" class="editable">Address</div>
-							</td>
-							<td>
-								<div contenteditable="true" class="editable">10.10.10.1</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div contenteditable="true" class="editable">Netmask</div>
-							</td>
-							<td>
-								<div contenteditable="true" class="editable">255.255.255.0</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div contenteditable="true" class="editable">Broadcast</div>
-							</td>
-							<td>
-								<div contenteditable="true" class="editable">10.10.10.255</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div contenteditable="true" class="editable">Gateway</div>
-							</td>
-							<td>
-								<div contenteditable="true" class="editable">10.10.10.254</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-				<div contenteditable="true" class="desc editable">
-					Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-					sed diam nonumy eirmod tempor invidunt ut labore et dolore
-					magna aliquyam erat, sed diam voluptua. At vero eos et
-					accusam et justo duo dolores et ea rebum. Stet clita kasd
-					gubergren, no sea takimata sanctus est Lorem ipsum dolor
-					sit amet. Lorem ipsum dolor sit amet, consetetur
-					sadipscing elitr, sed diam nonumy eirmod tempor invidunt
-					ut labore et dolore magna aliquyam erat, sed diam
-					voluptua. At vero eos et accusam et justo duo dolores et
-					ea rebum. Stet clita kasd gubergren, no sea takimata
-					sanctus est Lorem ipsum dolor sit amet.
-				</div>
-			</div>
-
-			<div contenteditable="false" class="node">
-				<div class="head">
-					<div class="symbol">☐</div>
-					<div contenteditable="true" class="text editable">A task to be done</div>
+					<div contenteditable="true" class="text editable">Some complicate thing</div>
 					<div class="info"></div>
 				</div>
-			</div>
-
-			<div contenteditable="false" class="node">
-				<div class="head">
-					<div class="symbol">☑</div>
-					<div contenteditable="true" class="text editable">
+				<div contenteditable="false" class="node">
+					<div class="head">
+						<div class="symbol">•</div>
+						<div contenteditable="true" class="text editable">SN-E1254</div>
+						<div class="info">Lenovo T430</div>
+					</div>
+					<table class="prop">
+						<tbody>
+							<tr>
+								<td>
+									<div contenteditable="true" class="editable">Address</div>
+								</td>
+								<td>
+									<div contenteditable="true" class="editable">10.10.10.1</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div contenteditable="true" class="editable">Netmask</div>
+								</td>
+								<td>
+									<div contenteditable="true" class="editable">255.255.255.0</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div contenteditable="true" class="editable">Broadcast</div>
+								</td>
+								<td>
+									<div contenteditable="true" class="editable">10.10.10.255</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div contenteditable="true" class="editable">Gateway</div>
+								</td>
+								<td>
+									<div contenteditable="true" class="editable">10.10.10.254</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div contenteditable="true" class="desc editable">
 						Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
 						sed diam nonumy eirmod tempor invidunt ut labore et dolore
 						magna aliquyam erat, sed diam voluptua. At vero eos et
@@ -109,33 +119,63 @@
 						ea rebum. Stet clita kasd gubergren, no sea takimata
 						sanctus est Lorem ipsum dolor sit amet.
 					</div>
-					<div class="info">Lorem ipsum dolor sit amet, <br>consetetur
-						sadipscing elitr, sed diam nonumy eirmod tempor invidunt
-						ut labore et dolore magna aliquyam erat, sed diam
-						voluptua. At vero eos et accusam et justo duo dolores et
-						ea rebum. Stet clita kasd gubergren, no sea takimata
-						sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor
-						sit amet, consetetur</div>
 				</div>
-			</div>
-			<div contenteditable="false" class="node">
-				<div class="head">
-					<div class="symbol">☚</div>
-					<div contenteditable="true" class="text editable">Waiting for an apple.</div>
-					<div class="info"><span class="date">since last week</span></div>
+
+				<div contenteditable="false" class="node">
+					<div class="head">
+						<div class="symbol">☐</div>
+						<div contenteditable="true" class="text editable">A task to be done</div>
+						<div class="info"></div>
+					</div>
+				</div>
+
+				<div contenteditable="false" class="node">
+					<div class="head">
+						<div class="symbol">☑</div>
+						<div contenteditable="true" class="text editable">
+							Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
+							sed diam nonumy eirmod tempor invidunt ut labore et dolore
+							magna aliquyam erat, sed diam voluptua. At vero eos et
+							accusam et justo duo dolores et ea rebum. Stet clita kasd
+							gubergren, no sea takimata sanctus est Lorem ipsum dolor
+							sit amet. Lorem ipsum dolor sit amet, consetetur
+							sadipscing elitr, sed diam nonumy eirmod tempor invidunt
+							ut labore et dolore magna aliquyam erat, sed diam
+							voluptua. At vero eos et accusam et justo duo dolores et
+							ea rebum. Stet clita kasd gubergren, no sea takimata
+							sanctus est Lorem ipsum dolor sit amet.
+						</div>
+						<div class="info">Lorem ipsum dolor sit amet, <br>consetetur
+							sadipscing elitr, sed diam nonumy eirmod tempor invidunt
+							ut labore et dolore magna aliquyam erat, sed diam
+							voluptua. At vero eos et accusam et justo duo dolores et
+							ea rebum. Stet clita kasd gubergren, no sea takimata
+							sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor
+							sit amet, consetetur</div>
+					</div>
 				</div>
 				<div contenteditable="false" class="node">
 					<div class="head">
-						<div class="symbol">☞</div>
-						<div contenteditable="true" class="text editable">Got a lemmon.</div>
-						<div class="info">
-							<span class="date">2 days ago</span>; <span>p</span>
+						<div class="symbol">☚</div>
+						<div contenteditable="true" class="text editable">Waiting for an apple.</div>
+						<div class="info"><span class="date">since last week</span></div>
+					</div>
+					<div contenteditable="false" class="node">
+						<div class="head">
+							<div class="symbol">☞</div>
+							<div contenteditable="true" class="text editable">Got a lemmon.</div>
+							<div class="info">
+								<span class="date">2 days ago</span>; <span>p</span>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-
-		<img class="calendar" src="calendar.svg" alt="" />
-	<body/>
+		</section>
+		<aside id="main-help">
+			Hilfe
+		</aside>
+	</div>
+	<!-- img class="calendar" src="calendar.svg" alt="" / -->
+<body/>
 </html>
