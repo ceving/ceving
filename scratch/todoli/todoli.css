@@ -8,45 +8,66 @@
 }
 
 body {
-		position: absolute;
+		margin: 0;
+		position: fixed;
 		top: 0;
+		right: 0;
 		bottom: 0;
 		left: 0;
-		right: 0;
-		background-color: #F0F0F0;
-		margin: 0;
 		display: flex;
-		flex-flow: column;
-		/* overflow: hidden; */
+		flex-direction: column;
+		background-color: gray;
+		height: 100%;
+ 		background-color: #F0F0F0;
 }
 
-#main-header {
-		width: 100%;
+header, footer {
 		background-color: #FFF0F0;
 }
 
+#main, nav, article, aside {
+		overflow: auto;
+}
 /* fix: http://codepen.io/anon/pen/ByJVzY */
 
-#main-columns {
-		flex-grow: 1;
+#main {
 		display: flex;
-		flex-flow: row wrap;
-		overflow: auto;
-		max-height: 100%;
 }
 
-#main-nav {
+article {
+}
+
+div#left-handle, div#right-handle {
+		padding: 0;
+		border-width: 0 0.5em 0 0.5em;
+		border-style: solid;
+}
+
+div#left-handle {
+		border-left-color: #FFFFF0;
+		border-right-color: #F0F0F0
+}
+
+div#right-handle {
+		border-left-color: #F0F0F0;
+		border-right-color: #F0FFF0;
+}
+
+div#left-handle:hover, div#right-handle:hover {
+		background-color: darkgray;
+		padding: 0 0.25em 0 0.25em;
+		border-width: 0 0.25em 0 0.25em;
+}
+
+
+nav {
 		background-color: #FFFFF0;
+		width: 20%;
 }
 
-#main-body {
-		flex-grow: 1;
-		max-height: 100%
-		overflow: auto;
-}
-
-#main-help {
+aside {
 		background-color: #F0FFF0;
+		width: 40%;
 }
 
 div.info {
@@ -72,7 +93,7 @@ div.node, table.prop, div.desc {
 		margin-left: 2em;
 }
 
-body > div.node {
+article > div.node {
 		margin: 0;
 }
 
