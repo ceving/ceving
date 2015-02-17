@@ -57,14 +57,21 @@
 		<header>
 			<span id="main-menu-button" class="menu">
 				<ul id="main-menu">
-					<li>Erster Eintrag</li>
+					<li>Navigation</li>
+					<ul>
+						<li onclick="$('nav').toggle()">toggle</li>
+					</ul>
+					<li>Hilfe</li>
+					<ul>
+						<li onclick="$('aside').toggle()">toggle</li>
+					</ul>
 					<li>Zweiter Punkt in der Liste</li>
 				</ul>
 			</span>
 			Überschrift
 		</header>
 		<div id="main">
-			<nav>Navigation</nav>
+			<nav id="nav">Navigation</nav>
 			<div id="left-handle"></div>
 			<article>
 				<div contenteditable="false" class="node">

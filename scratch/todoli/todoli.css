@@ -35,13 +35,14 @@ header {
 
 article {
 		background-color: #F0F0F0;
+		flex-grow: 1;
 }
 
 div#left-handle, div#right-handle {
 		padding: 0;
 		border-width: 0 0.5em 0 0.5em;
 		border-style: solid;
-		cursor: w-resize;
+		cursor: col-resize;
 }
 
 div#left-handle {
@@ -205,13 +206,20 @@ span.menu > ul {
 		display: none;
 		margin: 1ex 0 0 0;
     box-shadow: 0.5ex 0.5ex 1ex #888;
+}
+
+span.menu ul {
     list-style-type: none;
 }
 
-span.menu > ul > li {
+span.menu ul ul {
+    padding-left: 1em;
+}
+
+span.menu > ul li {
 		margin: 0;
 		padding: 0.5ex 1ex 0.5ex 1ex;
 }
-span.menu > ul > li:hover {
+span.menu > ul li:hover {
 		background-color: #FFF;
 }

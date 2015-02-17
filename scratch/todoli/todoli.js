@@ -82,4 +82,36 @@ $(document).ready(function(){
 			function() { menu.hide(); }
 		);
 	})();
+
+	(function() {
+		var resizing = false;
+		var start_x = null;
+		var start_w = null;
+		$('#left-handle')
+			.mousedown(function(e) {
+				console.debug(e);
+				resizing = true;
+				start_x = e.screenX;
+				start_w = $('nav').width();
+				console.debug(start_w);
+				return false;
+			})
+			.mousemove(function(e) {
+				if (resizing) {
+					var offset = start_x - e.screenX;
+					console.debug("offset: " + offset);
+					var new_width = start_w - offset;
+					console.debug("new width: " + new_width);
+					document.getElementById('nav').style.width = new_width + 'px';
+				}
+			});
+		$(document).mouseup(function() {
+			if (resizing) {
+				resizing = false;
+				start_x = null;
+				start_w = null;
+			}
+		});
+	})();
+
 });
