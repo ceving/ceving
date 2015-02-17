@@ -72,4 +72,14 @@ $(document).ready(function(){
 		["C-1", quotekey(1)]);
 
 	add_datainput();
+
+	(function() {
+		var button = $(document.getElementById("main-menu-button"));
+		var menu = $(document.getElementById("main-menu"));
+		
+		button.hover(
+			function() { menu.show(); },
+			function() { menu.hide(); }
+		);
+	})();
 });

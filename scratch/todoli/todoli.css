@@ -3,7 +3,7 @@
 		padding-left: 0.5ex;
 		padding-right: 0.5ex;
 }
-.editable:focus {
+.editable:focus, .editable:hover {
 		background-color: #FFFFFF;
 }
 
@@ -16,36 +16,37 @@ body {
 		left: 0;
 		display: flex;
 		flex-direction: column;
-		background-color: gray;
+		background-color: #E0E0E0;
 		height: 100%;
- 		background-color: #F0F0F0;
 }
 
-header, footer {
-		background-color: #FFF0F0;
+header {
+		margin-top: 1ex;
+		margin-bottom: 1ex;
 }
 
 #main, nav, article, aside {
 		overflow: auto;
 }
-/* fix: http://codepen.io/anon/pen/ByJVzY */
 
 #main {
 		display: flex;
 }
 
 article {
+		background-color: #F0F0F0;
 }
 
 div#left-handle, div#right-handle {
 		padding: 0;
 		border-width: 0 0.5em 0 0.5em;
 		border-style: solid;
+		cursor: w-resize;
 }
 
 div#left-handle {
 		border-left-color: #FFFFF0;
-		border-right-color: #F0F0F0
+		border-right-color: #F0F0F0;
 }
 
 div#right-handle {
@@ -181,4 +182,36 @@ img.calendar {
 #datafile {
 		position: absolute;
 		top: -6ex;
+}
+
+span.menu {
+		display: inline-block;
+		cursor: pointer;
+}
+
+span.menu:before {
+		content: "☰";
+		padding: 1ex;
+}
+
+span.menu:hover:before {
+		background-color: #FFF;
+}
+
+span.menu > ul {
+		position: absolute;
+		background-color: #E0E0E0;
+		padding: 1ex;
+		display: none;
+		margin: 1ex 0 0 0;
+    box-shadow: 0.5ex 0.5ex 1ex #888;
+    list-style-type: none;
+}
+
+span.menu > ul > li {
+		margin: 0;
+		padding: 0.5ex 1ex 0.5ex 1ex;
+}
+span.menu > ul > li:hover {
+		background-color: #FFF;
 }
