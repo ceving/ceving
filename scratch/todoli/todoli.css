@@ -25,17 +25,23 @@ header {
 		margin-bottom: 1ex;
 }
 
-#main, nav, article, aside {
+section, nav, article, aside {
 		overflow: auto;
 }
 
-#main {
+section {
 		display: flex;
+		flex: 1;
+		flex-wrap: wrap;
+}
+
+nav, aside {
+		flex: 1;
 }
 
 article {
 		background-color: #F0F0F0;
-		flex-grow: 1;
+		flex: 2;
 }
 
 div#left-handle, div#right-handle {
@@ -61,15 +67,20 @@ div#left-handle:hover, div#right-handle:hover {
 		border-width: 0 0.25em 0 0.25em;
 }
 
+nav, aside {
+		min-width: 10em;
+}
+
+article {
+		min-width: 20em;
+}
 
 nav {
 		background-color: #FFFFF0;
-		width: 20%;
 }
 
 aside {
 		background-color: #F0FFF0;
-		width: 40%;
 }
 
 div.info {
