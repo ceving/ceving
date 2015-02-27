@@ -5,7 +5,7 @@ span.l15n > span {
 		display: none;
 }
 span.l15n > span:lang(en) {
-		display: initial;
+		display: inline;
 }
 th {
 		text-align: left;
