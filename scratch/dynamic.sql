@@ -4,7 +4,7 @@ CREATE TABLE type (
   name TEXT
 );
 
--- A record has a unique number and a type.
+-- A record has a unique number and a type and zero or more values.
 CREATE TABLE record (
   id INTEGER PRIMARY KEY,
   type INTEGER,
