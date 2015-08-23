@@ -19,7 +19,7 @@ typedef struct pair_s pair_t;
 struct value_s {
   type_t type;
   union {
-    atom_t *atom, *exact, *inexact, *symbol, *string;
+    atom_t *atom;
     pair_t *pair;
   } data;
 };
@@ -45,5 +45,7 @@ DECLARE_PREDICATE(pair)
 
 value_t *make_atom (type_t type, size_t length, void *buffer);
 value_t *make_pair (value_t *car, value_t *cdr);
+
+value_t *make_atom_charp (type_t type, char *buffer);
 
 #endif /* DATA_H */

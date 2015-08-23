@@ -4,7 +4,8 @@
 %{
 #define MAX_STRING_LENGTH 1024
 #include "message.h"
-#define YYSTYPE char*
+#include "data.h"
+#define YYSTYPE value_s*
 #include "parser.tab.h"
 %}
 
@@ -23,7 +24,7 @@
 <string>\" { /* End of a string */
   BEGIN(INITIAL);
   *string_buf_ptr = '\0';
-  yylval = strdup(string_buf);
+  yylval = make_atom_charp (STRING_T, string_buf);
   return STRING;
 }
      
@@ -67,12 +68,12 @@
 }
 
 [0-9]+\.[0-9]+ { /* Floating point number */
-    yylval = strdup(yytext);
+    yylval = make_atom_charp (INEXACT_T, yytext);
     return FLOAT;
 }
 
 [0-9]+ { /* Exact number */
-    yylval = strdup(yytext);
+    yylval = make_atom_charp (EXACT_T, yytext);
     return EXACT;
 }
 
@@ -80,7 +81,7 @@
 ")" { return ')'; }
 
 [a-zA-Z0-9_*!$%&/=?<>+*,.:_-]+ { /* Symbol */
-    yylval = strdup(yytext);
+    yylval = make_atom_charp (SYMBOL_T, yytext);
     return SYMBOL;
 }
 

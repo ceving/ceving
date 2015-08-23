@@ -87,3 +87,10 @@ value_t *make_pair (value_t *car, value_t *cdr)
  ERROR_VALUE:
   return NULL;
 }
+
+
+value_t *make_atom_charp (type_t type, char *buffer)
+{
+  return make_atom (type, strlen (buffer), (void*) buffer);
+}
+

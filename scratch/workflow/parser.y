@@ -1,11 +1,13 @@
 %{
 #include <stdio.h>
+#include "data.h"
 #include "message.h"
 extern FILE *yyin;
 int yylex (void);
 void yyerror (char const *);
-#define YYSTYPE char*
+#define YYSTYPE value_s*
 %}
+
 
 %token EXACT
 %token FLOAT
