@@ -15,14 +15,13 @@ typedef enum {
 typedef struct value_s value_t;
 typedef struct atom_s atom_t;
 typedef struct pair_s pair_t;
-typedef struct list_s list_t;
 
 struct value_s {
   type_t type;
   union {
-    atom_t *exact, *inexact, *symbol, *string;
+    atom_t *atom, *exact, *inexact, *symbol, *string;
     pair_t *pair;
-  } value;
+  } data;
 };
 
 struct atom_s {
@@ -43,5 +42,8 @@ DECLARE_PREDICATE(symbol)
 DECLARE_PREDICATE(string)
 DECLARE_PREDICATE(null)
 DECLARE_PREDICATE(pair)
+
+value_t *make_atom (type_t type, size_t length, void *buffer);
+value_t *make_pair (value_t *car, value_t *cdr);
 
 #endif /* DATA_H */
