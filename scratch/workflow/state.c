@@ -1,3 +1,5 @@
+#include "global.h"
+
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -15,6 +17,7 @@
 
 int main (int argc, char *argv[])
 {
+  int result;
   int buffer_size = BUFFER_SIZE;
   int process_id = 0;
   int task_id = 0;
@@ -48,12 +51,6 @@ int main (int argc, char *argv[])
   if (task_id <= 0)
     error (EXIT_FAILURE, 0, "Task id undefined.");
   
-  /* Allocate memory for the copy buffer. */
-  uint8_t *buffer = malloc (buffer_size);
-  if (buffer == NULL)
-    error (EXIT_FAILURE, errno,
-           "Can not allocate %d bytes for the copy buffer.", buffer_size);
-
   /* Allocate memory for the state file name. */
   int int_length = floor (log10 (INT_MAX)) + 1;
   int max_filename = int_length * 2 + 7 + 1; /* must match the pattern in snprintf. */
@@ -69,24 +66,9 @@ int main (int argc, char *argv[])
     error (EXIT_FAILURE, errno,
            "Can not open state file '#%s' for writing.", filename);
 
-  /* Read all input. */
-  ssize_t r, w;
-  for (;;) {
-    r = read (STDIN_FILENO, buffer, buffer_size);
-    if (r < 0)
-      error (EXIT_FAILURE, errno,
-             "Can not read state data.");
-    if (r == 0) {
-      break;
-    }
-    w = write (state_fd, buffer, r);
-    if (w < 0)
-      error (EXIT_FAILURE, errno,
-             "Can not write state data.");
-    if (r != w)
-      error (EXIT_FAILURE, 0,
-             "Wrote only %d bytes of %d bytes read.", w, r);
-  }
+  result = copy (STDIN_FILENO, state_fd, buffer_size);
+  if (result < 0)
+    ERROR (1, "Can not copy data.");
 
   /* Sync file system. */
   if (fsync (state_fd) < 0)

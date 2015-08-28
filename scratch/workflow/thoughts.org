@@ -1,0 +1,13 @@
+* Thoughts
+  This file contains some random thoughts, which came up during development.
+
+  - It is not possible to implement a state as a process in a pipe. If
+    the sender fails, the state wil be empty instead of erronous.
+    
+    Example: kill(getpid(), SIGKILL) | state
+    
+    The input handle of state will just be closed.  It is not possible
+    to distinguish the error this from the situation, where the sender
+    did not send anything.
+
+    The state must only be written, if the sender succeeds.
