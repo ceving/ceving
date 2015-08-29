@@ -66,7 +66,7 @@ int main (int argc, char *argv[])
     error (EXIT_FAILURE, errno,
            "Can not open state file '#%s' for writing.", filename);
 
-  result = copy (STDIN_FILENO, state_fd, buffer_size);
+  result = copy (STDIN_FILENO, state_fd);
   if (result < 0)
     ERROR (1, "Can not copy data.");
 

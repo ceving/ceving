@@ -10,44 +10,57 @@
 
 int action (char *filename, int input, int output)
 {
+  /*
   if (flock (input, LOCK_EX) < 0)
     ERROR_N (1, "Can not lock input.");
   if (flock (output, LOCK_EX) < 0)
     ERROR_N (2, "Can not lock output.");
+  */
 
-  int pipe_in_fd[2];
-  int pipe_out_fd[2];
+  int parent_to_child[2];
+  int child_to_parent[2];
   pid_t child_pid;
 
-  if (pipe (pipe_in_fd) == -1)
-    ERROR_N (5, "Can not create input pipe.");
+  if (pipe (parent_to_child) == -1)
+    ERROR_N (5, "Can not create parent to child pipe.");
 
-  if (pipe (pipe_out_fd) == -1)
+  TRACE_INT(parent_to_child[1]);
+  TRACE_INT(parent_to_child[0]);
+
+  if (pipe (child_to_parent) == -1)
     ERROR_N (5, "Can not create output pipe.");
+
+  TRACE_INT(child_to_parent[1]);
+  TRACE_INT(child_to_parent[0]);
+
 
   child_pid = fork();
   if (child_pid == -1)
     ERROR_N (6, "Can not fork.");
 
+
   if (child_pid == 0)
     {
+      /* child */
       int result;
 
-      close (STDIN_FILENO);
-      close (pipe_in_fd[1]);
+      close (parent_to_child[1]);
+      close (child_to_parent[0]);
+
       do {
-        result = dup2 (pipe_in_fd[0], STDIN_FILENO);
+        result = dup2 (parent_to_child[0], STDIN_FILENO);
         if (result < 0 && errno != EINTR)
           ERROR_N (7, "Can not duplicate stdin.");
       } while (result == EINTR);
 
-      close (STDOUT_FILENO);
-      close (pipe_out_fd[0]);
       do {
-        result = dup2 (pipe_out_fd[1], STDOUT_FILENO);
+        result = dup2 (child_to_parent[1], STDOUT_FILENO);
         if (result < 0 && errno != EINTR)
           ERROR_N (8, "Can not duplicate stdout.");
       } while (result == EINTR);
+
+      close (parent_to_child[0]);
+      close (child_to_parent[1]);
 
       if (execl (filename, filename, (char*) NULL) < 0)
         ERROR_N (9, "Can not execute '%s'.", filename);
@@ -56,23 +69,27 @@ int action (char *filename, int input, int output)
     }
   else
     {
-      close (pipe_in_fd[0]);
-      close (pipe_out_fd[1]);
+      /* parent */
+      close (parent_to_child[0]);
+      close (child_to_parent[1]);
 
-      copy (input, pipe_in_fd[1]);
-      close (pipe_in_fd[1]);
+      copy (input, parent_to_child[1]);
 
-      copy (pipe_out_fd[0], output);
-      close (pipe_out_fd[0]);
+      close (parent_to_child[1]);
+
+
+      copy (child_to_parent[0], output);
+      close (child_to_parent[0]);
 
       wait (0);
     }
 
+  /*
   if (flock (output, LOCK_UN) < 0)
     ERROR_N (3, "Can not unlock output.");
   if (flock (input, LOCK_UN) < 0)
     ERROR_N (4, "Can not unlock input.");
-
+  */
   return 0;
 }
 
