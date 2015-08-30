@@ -12,9 +12,9 @@ int action (char *filename, int input, int output)
 {
   /*
   if (flock (input, LOCK_EX) < 0)
-    ERROR_N (1, "Can not lock input.");
+    LERROR (1, "Can not lock input.");
   if (flock (output, LOCK_EX) < 0)
-    ERROR_N (2, "Can not lock output.");
+    LERROR (2, "Can not lock output.");
   */
 
   int parent_to_child[2];
@@ -22,21 +22,20 @@ int action (char *filename, int input, int output)
   pid_t child_pid;
 
   if (pipe (parent_to_child) == -1)
-    ERROR_N (5, "Can not create parent to child pipe.");
+    LERROR (5, "Can not create parent to child pipe.");
 
-  TRACE_INT(parent_to_child[1]);
-  TRACE_INT(parent_to_child[0]);
+  TRACE("%d", parent_to_child[1]);
+  TRACE("%d", parent_to_child[0]);
 
   if (pipe (child_to_parent) == -1)
-    ERROR_N (5, "Can not create output pipe.");
+    LERROR (5, "Can not create output pipe.");
 
-  TRACE_INT(child_to_parent[1]);
-  TRACE_INT(child_to_parent[0]);
-
+  TRACE("%d", child_to_parent[1]);
+  TRACE("%d", child_to_parent[0]);
 
   child_pid = fork();
   if (child_pid == -1)
-    ERROR_N (6, "Can not fork.");
+    LERROR (6, "Can not fork.");
 
 
   if (child_pid == 0)
@@ -50,20 +49,20 @@ int action (char *filename, int input, int output)
       do {
         result = dup2 (parent_to_child[0], STDIN_FILENO);
         if (result < 0 && errno != EINTR)
-          ERROR_N (7, "Can not duplicate stdin.");
+          LERROR (7, "Can not duplicate stdin.");
       } while (result == EINTR);
 
       do {
         result = dup2 (child_to_parent[1], STDOUT_FILENO);
         if (result < 0 && errno != EINTR)
-          ERROR_N (8, "Can not duplicate stdout.");
+          LERROR (8, "Can not duplicate stdout.");
       } while (result == EINTR);
 
       close (parent_to_child[0]);
       close (child_to_parent[1]);
 
       if (execl (filename, filename, (char*) NULL) < 0)
-        ERROR_N (9, "Can not execute '%s'.", filename);
+        LERROR (9, "Can not execute '%s'.", filename);
 
       exit (1);
     }
@@ -86,14 +85,17 @@ int action (char *filename, int input, int output)
 
   /*
   if (flock (output, LOCK_UN) < 0)
-    ERROR_N (3, "Can not unlock output.");
+    LERROR (3, "Can not unlock output.");
   if (flock (input, LOCK_UN) < 0)
-    ERROR_N (4, "Can not unlock input.");
+    LERROR (4, "Can not unlock input.");
   */
   return 0;
 }
 
 int main (int argc, char *argv[])
 {
+  WARN("warn");
+  INFO("info");
+  NOTICE("notice");
   return action (argv[1], STDIN_FILENO, STDOUT_FILENO);
 }

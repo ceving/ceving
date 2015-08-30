@@ -6,7 +6,10 @@ all: state dump workflow
 clean:
 	rm -f *.o action
 
-action: action.c copy.c
+test:
+	./action
+
+action: action.c copy.c message.c
 
 state: state.c copy.c
 

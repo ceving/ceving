@@ -2,35 +2,45 @@
 #define GLOBAL_H
 
 #include <stdio.h>
+#include <string.h>
+
+#include "message.h"
+
+#define STDERRMSG(PRIORITY, FORMAT, ...) do {           \
+    static char buffer[0x1000];                         \
+    if (log_message (buffer, sizeof(buffer),            \
+                     PRIORITY, __FILE__, __LINE__,      \
+                     FORMAT, ##__VA_ARGS__) > 0);       \
+    fprintf (stderr, "%s\n", buffer);                   \
+  } while (0)
+
+#define TRACE(FORMAT, VALUE) do {                       \
+    STDERRMSG(LOG_DEBUG, "%s=" FORMAT, #VALUE, VALUE);  \
+  } while (0)
+
+#define INFO(FORMAT, ...) do {                          \
+    STDERRMSG(LOG_INFO, FORMAT, ##__VA_ARGS__);         \
+  } while (0)
+
+#define NOTICE(FORMAT, ...) do {                        \
+    STDERRMSG(LOG_NOTICE, FORMAT, ##__VA_ARGS__);       \
+  } while (0)
+
+#define WARN(FORMAT, ...) do {                          \
+    STDERRMSG(LOG_WARNING, FORMAT, ##__VA_ARGS__);      \
+  } while (0)
+
+#define ERROR(RETURN, FORMAT, ...) do {                 \
+    STDERRMSG(LOG_ERR, FORMAT, ##__VA_ARGS__);          \
+    return -(RETURN);                                   \
+  } while (0)
+
 #include <errno.h>
-#include <error.h>
 
-extern char *program_invocation_name;
-
-#define DEBUG(FORMAT, ...) do {                       \
-    fprintf (stderr, "[%d] %s:%d: " FORMAT "\n",      \
-             getpid(), __FILE__, __LINE__,            \
-             ##__VA_ARGS__);                          \
-  } while (0)
-
-#define TRACE_INT(INT) do {                     \
-    DEBUG("%s=%d", #INT, INT);                  \
-  } while (0)
-
-
-#define ERROR(RETURN, FORMAT, ...) do {               \
-    error_at_line (0, 0, __FILE__, __LINE__,          \
-                   "%d: ERROR: " FORMAT , getpid(),   \
-                   ##__VA_ARGS__);                    \
-    return -(RETURN);                                 \
-  } while (0)
-
-#define ERROR_N(RETURN, FORMAT, ...) do {             \
-    int e = errno;                                    \
-    error_at_line (0, e, __FILE__, __LINE__,          \
-                   "%d: ERROR: " FORMAT ,             \
-                   getpid(), ##__VA_ARGS__);          \
-    return -(RETURN);                                 \
+#define LERROR(RETURN, FORMAT, ...) do {                \
+    int e = errno;                                      \
+    ERROR(RETURN, FORMAT " (%s)",                       \
+          ##__VA_ARGS__, strerror(e));                  \
   } while (0)
 
 int copy (int source, int destination);

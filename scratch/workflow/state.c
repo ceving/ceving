@@ -13,18 +13,15 @@
 #include <limits.h>
 #include <math.h>
 
-#define BUFFER_SIZE 0x1000
-
 int main (int argc, char *argv[])
 {
   int result;
-  int buffer_size = BUFFER_SIZE;
   int process_id = 0;
   int task_id = 0;
 
   /* Parse command line options. */
   int opt;
-  while ((opt = getopt(argc, argv, "p:t:b:")) != -1) {
+  while ((opt = getopt(argc, argv, "p:t:")) != -1) {
     switch (opt) {
     case 'p':
       process_id = atoi (optarg);
@@ -35,9 +32,6 @@ int main (int argc, char *argv[])
       task_id = atoi (optarg);
       if (task_id <= 0)
         error (EXIT_FAILURE, 0, "Invalid task id.");
-      break;
-    case 'b':
-      buffer_size = atoi (optarg);
       break;
     default:
       error (EXIT_FAILURE, 0,
