@@ -22,7 +22,9 @@ int copy (int source, int destination)
   /* Read all input. */
   ssize_t r, w;
   for (;;) {
+    DEBUG ("start reading");
     r = read (source, buffer, BUFFER_SIZE);
+    DEBUG ("bytes read: %d", r);
     if (r < 0)
       LERROR (2, "Can not read from copy source (fd: %d).", source);
     if (r == 0) {

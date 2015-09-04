@@ -14,8 +14,8 @@
     fprintf (stderr, "%s\n", buffer);                   \
   } while (0)
 
-#define TRACE(FORMAT, VALUE) do {                       \
-    STDERRMSG(LOG_DEBUG, "%s=" FORMAT, #VALUE, VALUE);  \
+#define DEBUG(FORMAT, ...) do {                         \
+    STDERRMSG(LOG_DEBUG, FORMAT, ##__VA_ARGS__);        \
   } while (0)
 
 #define INFO(FORMAT, ...) do {                          \
@@ -30,18 +30,23 @@
     STDERRMSG(LOG_WARNING, FORMAT, ##__VA_ARGS__);      \
   } while (0)
 
-#define ERROR(RETURN, FORMAT, ...) do {                 \
+#define ERROR(CONTINUATION, FORMAT, ...) do {           \
     STDERRMSG(LOG_ERR, FORMAT, ##__VA_ARGS__);          \
-    return -(RETURN);                                   \
+    goto CONTINUATION;                                  \
   } while (0)
 
 #include <errno.h>
 
-#define LERROR(RETURN, FORMAT, ...) do {                \
+#define LERROR(CONTINUATION, FORMAT, ...) do {          \
     int e = errno;                                      \
-    ERROR(RETURN, FORMAT " (%s)",                       \
+    ERROR(CONTINUATION, FORMAT " (%s)",                 \
           ##__VA_ARGS__, strerror(e));                  \
   } while (0)
+
+#define TRACE(FORMAT, VALUE) do {                       \
+    DEBUG("%s => {" FORMAT "}", #VALUE, VALUE);         \
+  } while (0)
+
 
 int copy (int source, int destination);
 

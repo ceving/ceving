@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall
+CFLAGS=-Wall -D_GNU_SOURCE
 
 all: state dump workflow
 

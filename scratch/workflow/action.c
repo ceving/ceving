@@ -1,12 +1,15 @@
 #include "global.h"
 
-#include <sys/types.h>
-#include <sys/wait.h>
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
 #include <sys/file.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
+
 
 int action (char *filename, int input, int output)
 {
@@ -36,11 +39,15 @@ int action (char *filename, int input, int output)
   child_pid = fork();
   if (child_pid == -1)
     LERROR (6, "Can not fork.");
-
-
+  
   if (child_pid == 0)
     {
       /* child */
+      DEBUG ("starting child");
+
+      if (setpgrp() < 0)
+        LERROR (10, "Can not set process group.");
+      
       int result;
 
       close (parent_to_child[1]);
@@ -64,23 +71,27 @@ int action (char *filename, int input, int output)
       if (execl (filename, filename, (char*) NULL) < 0)
         LERROR (9, "Can not execute '%s'.", filename);
 
+      DEBUG ("terminating child");
       exit (1);
     }
   else
     {
       /* parent */
-      close (parent_to_child[0]);
-      close (child_to_parent[1]);
+      DEBUG ("starting parent");
+      
+      TRACE("%d", close (parent_to_child[0]));
+      TRACE("%d", close (child_to_parent[1]));
 
       copy (input, parent_to_child[1]);
 
-      close (parent_to_child[1]);
-
+      TRACE("%d", close (parent_to_child[1]));
 
       copy (child_to_parent[0], output);
-      close (child_to_parent[0]);
+      TRACE("%d", close (child_to_parent[0]));
 
+      DEBUG ("waiting");
       wait (0);
+      DEBUG ("terminating parent");
     }
 
   /*
@@ -89,13 +100,46 @@ int action (char *filename, int input, int output)
   if (flock (input, LOCK_UN) < 0)
     LERROR (4, "Can not unlock input.");
   */
+
   return 0;
 }
 
+int open_input_state (char *filename)
+{
+  //  open (filename, O_RDONLY
+  return 0;
+}
+
+int open_output_state (char *filename)
+{
+  int fd = open (".", O_TMPFILE | O_WRONLY, S_IRUSR | S_IWUSR);
+  if (fd < 0)
+    perror ("open");
+  
+  char message[] = "Hello World!";
+  if (write (fd, message, sizeof(message)) < 0)
+    perror ("write");
+
+  if (linkat (fd, "", AT_FDCWD, "s1", AT_EMPTY_PATH) < 0)
+    perror ("linkat");
+
+  return -1;
+}
+
+
+int error_test()
+{
+  FAIL_IF((open("nix") < 0),
+          "Can not open nix file.",
+          
+}
+
+
+
+
 int main (int argc, char *argv[])
 {
-  WARN("warn");
-  INFO("info");
-  NOTICE("notice");
-  return action (argv[1], STDIN_FILENO, STDOUT_FILENO);
+  //return action (argv[1], STDIN_FILENO, STDOUT_FILENO);
+  TRACE("%d", open_output_state ("o1"));
+  return 0;
 }
