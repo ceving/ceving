@@ -6,8 +6,11 @@ all: state dump workflow
 clean:
 	rm -f *.o action
 
+errors.c.c: errors.c
+	$(CC) -E $(CFLAGS) $< > $@
+
 test:
-	./action
+	./errors ; ./errors 3 ; ./errors 2 ; ./errors 1 
 
 action: action.c copy.c message.c
 
