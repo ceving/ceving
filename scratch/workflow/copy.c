@@ -1,45 +1,56 @@
-#include "global.h"
-
 #include <stdint.h>
 #include <stdlib.h>
 #include <error.h>
 #include <errno.h>
 #include <unistd.h>
 
+#include "logging.h"
+
+#include "copy.h"
+
 #define BUFFER_SIZE 0x1000
+
 
 int copy (int source, int destination)
 {
-  TRACE("%d", source);
-  TRACE("%d", destination);
+    ERRORS (OUT_OF_MEMORY,
+            CAN_NOT_READ,
+            CAN_NOT_WRITE,
+            WRITE_INCOMPLETE);
 
-  /* Allocate memory for the copy buffer. */
-  uint8_t *buffer = malloc (BUFFER_SIZE);
-  if (buffer == NULL)
-    LERROR (1, "Can not allocate %d bytes for the copy buffer.",
-            BUFFER_SIZE);
+    TRACEd (source);
+    TRACEd (destination);
 
-  /* Read all input. */
-  ssize_t r, w;
-  for (;;) {
-    DEBUG ("start reading");
-    r = read (source, buffer, BUFFER_SIZE);
-    DEBUG ("bytes read: %d", r);
-    if (r < 0)
-      LERROR (2, "Can not read from copy source (fd: %d).", source);
-    if (r == 0) {
-      break;
+    int result = 0;
+
+    uint8_t *buffer = malloc (BUFFER_SIZE);
+    IF_NULL (buffer, OUT_OF_MEMORY);
+
+    ssize_t r, w;
+    for (;;) {
+        DEBUG ("start reading");
+        r = read (source, buffer, BUFFER_SIZE);
+        IF_ERRNO (r, CAN_NOT_READ);
+        if (r == 0) {
+            break;
+        }
+        w = write (destination, buffer, r);
+        IF_ERRNO(w, CAN_NOT_WRITE);
+        if (r != w) {
+            TRACEd(r);
+            TRACEd(w);
+            
+            ERROR (4, "Wrote only %d bytes of %d bytes read.", w, r);
     }
-    w = write (destination, buffer, r);
-    if (w < 0)
-      LERROR (3, "Can not write to copy destination (fd: %d).", destination);
-    if (r != w)
-      ERROR (4, "Wrote only %d bytes of %d bytes read.", w, r);
-  }
 
-  /* Free memory */
-  free (buffer);
+ CAN_NOT_READ:
+ CAN_NOT_WRITE:
+ WRITE_INCOMPLETE:
 
-  return 0;
+    free (buffer);
+
+ OUT_OF_MEMORY:
+
+    RETURN ();
 }
 
