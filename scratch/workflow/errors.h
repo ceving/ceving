@@ -7,21 +7,21 @@
 #include <string.h>
 #include <errno.h>
 
-#define SYSLOG(LEVEL, FORMAT, ARGS...)                              \
-    syslog (LEVEL, FORMAT " [%s:%d]" , ##ARGS, __FILE__, __LINE__)
+#define SYSLOG(LEVEL, TAG, FORMAT, ARGS...)                              \
+    syslog (LEVEL, TAG " " FORMAT " [%s:%d]" , ##ARGS, __FILE__, __LINE__)
 
-#define WARN(FORMAT, ARGS...)  SYSLOG(LOG_WARNING, FORMAT , ##ARGS)
-#define INFO(FORMAT, ARGS...)  SYSLOG(LOG_INFO,    FORMAT , ##ARGS)
-#define NOTE(FORMAT, ARGS...)  SYSLOG(LOG_NOTICE,  FORMAT , ##ARGS)
-#define FAIL(FORMAT, ARGS...)  SYSLOG(LOG_ERR,     FORMAT , ##ARGS)
-#define DEBUG(FORMAT, ARGS...) SYSLOG(LOG_DEBUG,   FORMAT , ##ARGS)
+#define WARN(FORMAT, ARGS...)  SYSLOG(LOG_WARNING, "WARNING", FORMAT , ##ARGS)
+#define INFO(FORMAT, ARGS...)  SYSLOG(LOG_INFO,    "INFO",    FORMAT , ##ARGS)
+#define NOTE(FORMAT, ARGS...)  SYSLOG(LOG_NOTICE,  "NOTICE",  FORMAT , ##ARGS)
+#define FAIL(FORMAT, ARGS...)  SYSLOG(LOG_ERR,     "ERROR",   FORMAT , ##ARGS)
+#define DEBUG(FORMAT, ARGS...) SYSLOG(LOG_DEBUG,   "DEBUG",   FORMAT , ##ARGS)
 
 #define ERRORS(ARGS...) enum _RESULT { _SUCCESS , ##ARGS } _RESULT = _SUCCESS
 #define RETURN() return _RESULT
 
 #define ERRMSG(ERROR, FORMAT, ARGS...)               \
-    FAIL ("ERROR %s (%s:%d): " FORMAT,               \
-          #ERROR, __func__, ERROR , ##ARGS)
+    FAIL ("%s/%s(%d): " FORMAT,               \
+          __func__, #ERROR, ERROR , ##ARGS)
     
 #define ERROR(ERROR, FORMAT, ARGS...) ({                \
     if (_RESULT == ERROR) {                             \
@@ -73,7 +73,7 @@
 #define TRACE(EXPRESSION, FORMAT)                                 \
     ({                                                            \
         typeof(EXPRESSION) _VALUE = EXPRESSION;                   \
-        DEBUG ("TRACE: %s => " FORMAT ".",                        \
+        DEBUG ("%s => " FORMAT ".",                        \
                #EXPRESSION, _VALUE);                              \
         _VALUE;                                                   \
     })
