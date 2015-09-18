@@ -23,10 +23,29 @@
     FAIL ("%s/%s(%d): " FORMAT,               \
           __func__, #ERROR, ERROR , ##ARGS)
     
-#define ERROR(ERROR, FORMAT, ARGS...) ({                \
+#define EXPLAIN(ERROR, FORMAT, ARGS...) ({              \
     if (_RESULT == ERROR) {                             \
         ERRMSG (ERROR, FORMAT , ##ARGS);                \
     } })
+
+#define ERROR(CONTINUATION) ({                  \
+      _RESULT = CONTINUATION;                   \
+      goto CONTINUATION;      \
+    })
+    
+/*
+#define IF(EXPRESSION, CONTINUATION) ({                     \
+    typeof(EXPRESSION) _VALUE = EXPRESSION;                 \
+    if (_VALUE) {                                           \
+        ERRMSG (CONTINUATION,                               \
+                "%s => " FORMAT " %s.",                     \
+                #EXPRESSION, _VALUE,                        \
+                #CONDITION);                                \
+        _RESULT = CONTINUATION;                             \
+        goto CONTINUATION;                                  \
+    }                                                       \
+    _VALUE; })
+*/
 
 #define IF1(EXPRESSION, CONDITION, CONTINUATION, FORMAT) ({ \
     typeof(EXPRESSION) _VALUE = EXPRESSION;                 \

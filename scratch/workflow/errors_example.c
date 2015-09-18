@@ -26,8 +26,26 @@ int xprintf (int *chars, const char *format, ...)
     *chars = n;
 
 printf:
-  ERROR (printf, "errno %d: %s", errnum, strerror(errnum));
+  EXPLAIN (printf, "errno %d: %s", errnum, strerror(errnum));
 
+  RETURN ();
+}
+
+
+int faulty ()
+{
+  ERRORS (soft, hard);
+
+  static int n = 0;
+
+  if (n++ % 2)
+    ERROR (soft);
+  else
+    ERROR (hard);
+
+soft:
+hard:
+  
   RETURN ();
 }
 
@@ -41,6 +59,8 @@ int main (int argc, char *argv[])
 
   openlog ("errors", LOG_PERROR | LOG_CONS | LOG_PID | LOG_NDELAY, LOG_USER);
 
+  faulty ();
+  
   IF_NULL (argv[1], missing_argument);
 
   int a = atoi(argv[1]);
