@@ -1,57 +1,60 @@
-#Include <stdint.h>
+#include <stdint.h>
 #include <stdlib.h>
-#include <error.h>
 #include <errno.h>
 #include <unistd.h>
 
 #include "errors.h"
+#include "logging.h"
+#include "result.h"
 
 #include "copy.h"
 
 #define BUFFER_SIZE 0x1000
 
 
-int copy (int source, int destination)
+result_t copy (int source, int destination)
 {
-  ERRORS (OUT_OF_MEMORY,
-          CAN_NOT_READ,
-          CAN_NOT_WRITE,
-          WRITE_INCOMPLETE);
+  TRACE ("%d", source);
+  TRACE ("%d", destination);
 
-  TRACEd (source);
-  TRACEd (destination);
-
-  int result = 0;
+  result_t result = OK;
 
   uint8_t *buffer = malloc (BUFFER_SIZE);
-  IF_NULL (buffer, OUT_OF_MEMORY);
+  if (buffer == NULL) {
+    result = ERRNO();
+    FAIL (result, "Can not allocate memory for copy buffer.");
+    goto RETURN;
+  }
 
   ssize_t r, w;
   for (;;)
   {
     DEBUG ("start reading");
     r = read (source, buffer, BUFFER_SIZE);
-    IF_ERRNO (r, CAN_NOT_READ);
+    if (r < 0) {
+      result = ERRNO();
+      FAIL (result, "Can not read from file descriptor %d.", source);
+      goto FREE_BUFFER;
+    }
     if (r == 0) {
       break;
     }
     w = write (destination, buffer, r);
-    IF_ERRNO(w, CAN_NOT_WRITE);
+    if (w < 0) {
+      result = ERRNO();
+      FAIL (result, "Can not write to file descriptor %d.", destination);
+      goto FREE_BUFFER;
+    }
     if (r != w) {
-      TRACEd(r);
-      TRACEd(w);
-            
-      ERROR (4, "Wrote only %d bytes of %d bytes read.", w, r);
+      result = apperr(ERIO);
+      FAIL (result, "Wrote only %d bytes of %d bytes read.", w, r);
+      goto FREE_BUFFER;
     }
   }
-    
-CAN_NOT_READ:
-CAN_NOT_WRITE:
-WRITE_INCOMPLETE:
-    
-  free (buffer);
-            
-OUT_OF_MEMORY:
 
-  RETURN ();
+FREE_BUFFER:
+  free (buffer);
+
+RETURN:
+  return result;
 }

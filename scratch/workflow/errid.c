@@ -3,17 +3,21 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <time.h>
+
+#include "xorshift.h"
+
+static uint32_t rand = 314159265;
 
 __attribute__((constructor))
-static void init_rand_with_pid() { srand(getpid()); }
+static void init_rand() { rand = getpid() * time(); }
 
 typedef struct {
-  unsigned int error     : 5;
-  unsigned int sys_errno : 12;
-  unsigned int id        : 15;
+  unsigned int err : 12;
+  unsigned int id  : 20;
 } result_t;
 
-#define RESULT(error) (result_t) {error, errno, rand()}
+#define RESULT(error) (result_t) {error, xorshift(&rand)}
 
 result_t faulty ()
 {
@@ -27,6 +31,7 @@ result_t faulty ()
   switch (result.error) {             \
   case 0: break;                      \
   HANDLING                            \
+  default: exit (2);                  \
   default: exit (1);                  \
   } })
 

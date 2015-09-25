@@ -1,7 +1,6 @@
-#ifndef COPY_HEADER
-#define COPY_HEADER
+#ifndef _COPY_H_
+#define _COPY_H_
 
-int copy (int source, int destination);
+result_t copy (int source, int destination);
 
-#endif
-
+#endif // _COPY_H_
