@@ -1,0 +1,14 @@
+PRAGMA foreign_keys=OFF;
+BEGIN TRANSACTION;
+CREATE TABLE person (id integer primary key autoincrement, firstname text, lastname text);
+INSERT INTO "person" VALUES(1,'Arthur','Dent');
+INSERT INTO "person" VALUES(2,'Bobby','Brown');
+INSERT INTO "person" VALUES(3,'Donald','Duck');
+INSERT INTO "person" VALUES(4,'John','Sinclair');
+INSERT INTO "person" VALUES(5,'Marius','Vollmer');
+INSERT INTO "person" VALUES(6,'Richard','Stallman');
+INSERT INTO "person" VALUES(7,'Ron','Jeremy');
+INSERT INTO "person" VALUES(8,NULL,'Schütte');
+DELETE FROM sqlite_sequence;
+INSERT INTO "sqlite_sequence" VALUES('person',8);
+COMMIT;

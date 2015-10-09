@@ -1,0 +1,21 @@
+td {
+    border: 1px solid black;
+}
+
+td.oplus {
+    color: green;
+}
+
+td.ominus {
+    color: red;
+}
+
+td.oplus, td.ominus {
+    border: none;
+    display: none;
+    cursor: pointer;
+}
+
+table:hover td.oplus, table:hover td.ominus {
+    display: table-cell;
+}
