@@ -10,6 +10,8 @@ var o = {
 
 
 $ (function () {
+  
+  return;
   $.getJSON ("data.cgi", function (data) {
     $.each (data, function (key, val) {
       console.log (val.id, val.firstname, val.lastname);

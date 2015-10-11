@@ -2,20 +2,31 @@ td {
     border: 1px solid black;
 }
 
-td.oplus {
+.oplus, .ominus {
+    display: none;
+    cursor: pointer;
+}
+
+.oplus {
     color: green;
 }
 
-td.ominus {
+.ominus {
     color: red;
 }
 
 td.oplus, td.ominus {
     border: none;
-    display: none;
-    cursor: pointer;
 }
 
 table:hover td.oplus, table:hover td.ominus {
     display: table-cell;
+}
+
+.anchor {
+    display: none;
+}
+
+#ende:hover .ominus {
+    display: inline;
 }
