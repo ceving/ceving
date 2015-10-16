@@ -17,6 +17,7 @@ my $dbh = DBI->connect(
       sqlite_unicode => 1 },
 ) || die $DBI::errstr;
 
+
 my $sth = $dbh->prepare("SELECT * FROM person");
 $sth->execute();
 
@@ -27,5 +28,5 @@ $dbh->disconnect();
 
 print
     $cgi->header(-type=>'application/json',
-                   -charset => 'UTF-8'),
+                 -charset => 'UTF-8'),
     $json;

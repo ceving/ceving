@@ -8,18 +8,25 @@ var o = {
   }
 };
 
+function dbval (entity, id, attribute, value)
+{
+  return $ ('<span>')
+    .addClass('dbval')
+    .attr ('id', entity + '#' + id + '.' + attribute)
+    .attr ('contenteditable', 'true')
+    .append (value);
+}
+
 
 $ (function () {
-  
-  return;
   $.getJSON ("data.cgi", function (data) {
     $.each (data, function (key, val) {
       console.log (val.id, val.firstname, val.lastname);
       $ ("#person").find('tbody')
         .append ($ ('<tr>')
                  .append ($ ('<td>').addClass("oplus").append ('&oplus;'))
-                 .append ($ ('<td>').append (val.firstname))
-                 .append ($ ('<td>').append (val.lastname))
+                 .append ($ ('<td>').append (dbval ('person', val.id, 'firstname', val.firstname)))
+                 .append ($ ('<td>').append (dbval ('person', val.id, 'lastname', val.lastname)))
                  .append ($ ('<td>').addClass("ominus").append ('&ominus;'))
                 );
     });
