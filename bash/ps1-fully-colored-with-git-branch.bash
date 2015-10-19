@@ -10,7 +10,7 @@ PROMPT_COMMAND ()
 {
   # Exit status
   EXIT_STATUS=$?
-  PS1EXIT=${EXIT_STATUS##+(0)}
+  PS1EXIT=${EXIT_STATUS##0}
 
   # Working directory
   PS1CLIP=${PWD: $((-PS1_MAXDIRLEN))}
