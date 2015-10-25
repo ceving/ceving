@@ -16,8 +16,7 @@ use Encode qw(decode_utf8);
 use POSIX qw(strftime);
 use CFG;
 
-
-my $CFG = CFG->new('/home/szi/p/ceving/scratch/jsops/eql.cfg');
+my $CFG = CFG->new('/etc/eql.cfg');
 
 sub stdout { print STDOUT @_; }
 sub stderr { print STDERR @_; }
