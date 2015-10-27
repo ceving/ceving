@@ -12,7 +12,7 @@ function data (query, success)
 {
   return jQuery.ajax({
     'type': 'POST',
-    'url': '/cgi-bin/eql?data',
+    'url': '/cgi-bin/eql?demo',
     encoding: 'UTF-8',
     'contentType': 'application/sql; charset=UTF-8',
     'data': query,
@@ -29,6 +29,31 @@ function dbval (entity, id, attribute, value)
     .attr ('contenteditable', 'true')
     .append (value);
 }
+
+
+function getset (value)
+{
+  if (value)
+    console.log ("setting");
+  else
+    console.log ("getting");
+}
+
+
+var Entity = function(entity, attributes)
+{   
+  var Entity = function (values) {
+    for (attribute of this.attributes()) {
+      this[attribute] = values[attribute];
+    }
+  };  
+
+  Entity.prototype.entity = function () { return entity; };      
+  Entity.prototype.attributes = function () { return attributes; };      
+
+  return Entity;    
+};
+
 
 
 $ (function () {

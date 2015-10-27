@@ -60,7 +60,7 @@ done < <(apachectl -S)
 # Redefine install for development or production.
 
 case ${1:-} in
-  --development -d)
+  --development|-d)
     shift
     install() {
       echo "Linking '$2' to '$3'."
@@ -75,5 +75,7 @@ esac
 
 # Install files.
 
-install 755 eql.cgi "${CGI_BIN%/}/eql.cgi"
+install 755 eql.cgi "${CGI_BIN%/}/eql"
 install 755 eql.cfg "$EQL_CFG"
+
+install 
